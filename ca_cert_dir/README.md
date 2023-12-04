@@ -1,0 +1,1 @@
+This folder contains the CA that the Vault provider uses to validate the certificate presented by Vault.
