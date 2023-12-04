@@ -1,0 +1,1 @@
+# --- Config for JWT auth used by TFC
