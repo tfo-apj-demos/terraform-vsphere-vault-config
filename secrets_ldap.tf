@@ -22,7 +22,7 @@ resource "vault_ldap_secret_backend_dynamic_role" "default" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "vsphere" {
-  mount         = vault_ldap_secret_backend.config.path
+  mount         = vault_ldap_secret_backend.this.path
   role_name     = "vsphere_virtual_machine_lifecycle"
   creation_ldif = templatefile("${path.module}/files/creation.ldif", {
     group_names =  ["vsphere_virtual_machine_lifecycle"]
