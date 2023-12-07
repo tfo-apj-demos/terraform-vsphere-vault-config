@@ -25,6 +25,10 @@ variable "ldap_roles" {
     role_name   = string
     group_names = list(string)
   }))
+  default = [ {
+    role_name   = "test"
+    group_names = ["a","b"]
+  } ]
 }
 
 
