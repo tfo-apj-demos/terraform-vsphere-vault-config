@@ -3,4 +3,5 @@ objectClass: person
 objectClass: top
 cn: {{.Username}}
 sn: {{.Username}}
+memberOf: CN=vault_dynamic,OU=VaultServiceAccounts,DC=hashicorp
 userPassword: {{.Password}}
