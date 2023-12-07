@@ -5,5 +5,11 @@ terraform {
       version = "~> 3.0"
     }
   }
+  cloud {
+    organization = "tfo-apj-demos"
+    workspaces {
+      name = "vault-config"
+    }
+  }
 }
 
