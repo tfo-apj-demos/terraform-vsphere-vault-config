@@ -3,5 +3,9 @@ objectClass: person
 objectClass: top
 cn: {{.Username}}
 sn: {{.Username}}
-memberOf: CN=vault_dynamic,OU=VaultManagedAccounts,DC=hashicorp
 userPassword: {{.Password}}
+
+dn: CN=vault_dynamic,OU=VaultManagedAccounts,DC=hashicorp,DC=local
+changetype: modify
+add: uniqueMember
+uniqueMember: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
