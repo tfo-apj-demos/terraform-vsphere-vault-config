@@ -9,7 +9,7 @@ resource "vault_ldap_secret_backend" "this" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "default" {
-  mount         = vault_ldap_secret_backend.config.path
+  mount         = vault_ldap_secret_backend.this.path
   role_name     = var.ldap_role_name
   creation_ldif = templatefile("${path.module}/files/creation.ldif", {
     group_names =  ["vault_dynamic"]
