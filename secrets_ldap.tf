@@ -25,5 +25,5 @@ resource "vault_ldap_secret_backend_dynamic_role" "role" {
   rollback_ldif = file("${path.module}/files/rollback.ldif")
   default_ttl   = 300
   max_ttl       = 3600
-  username_template = "{{.RoleName}}-{{unix_time}}-{{random 8}}"
+  username_template = "{{.DisplayName | truncate 8 }}-{{unix_time}}-{{random 8}}"
 }
