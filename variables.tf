@@ -28,3 +28,23 @@ variable "ldap_userdn" {
   description = "DN of users for LDAP"
   type        = string
 }
+
+variable "ldap_role_name" {
+  description = "Name of the LDAP role"
+  type        = string
+}
+
+variable "ldap_creation_ldif" {
+  description = "LDIF template used to create a user account"
+  type        = string
+}
+
+variable "ldap_deletion_ldif" {
+  description = "LDIF template used to delete a user account"
+  type        = string
+}
+
+variable "ldap_rollback_ldif" {
+  description = "LDIF template used to rollback changes on error"
+  type        = string
+}
