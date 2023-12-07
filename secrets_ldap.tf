@@ -8,6 +8,11 @@ resource "vault_ldap_secret_backend" "this" {
   certificate  = file("${path.module}/ca_cert_dir/root_ca.pem")
 }
 
+import {
+  id = "ldap"
+  to = vault_ldap_secret_backend.this
+}
+
 resource "vault_ldap_secret_backend_dynamic_role" "default" {
   mount         = vault_ldap_secret_backend.this.path
   role_name     = var.ldap_role_name
