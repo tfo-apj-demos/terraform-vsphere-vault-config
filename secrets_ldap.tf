@@ -5,7 +5,7 @@ resource "vault_ldap_secret_backend" "config" {
   bindpass     = var.ldap_bindpass
   url          = "ldaps://dc-0.hashicorp.local" # have to provide the server here to match the certificate
   userdn       = var.ldap_userdn
-
+  certificate  = file("${path.module}/ca_cert_dir/root_ca.pem")
 }
 
 /*resource "vault_ldap_secret_backend_static_role" "role" {
