@@ -9,7 +9,7 @@ resource "vault_ldap_secret_backend" "this" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "this" {
-  for_each  = toset(var.ldap_roles)
+  for_each  = toset({ for role in var.ldap_roles: role.role_name => role })
   mount     = vault_ldap_secret_backend.this.path
   role_name = each.value.role_name
   creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
