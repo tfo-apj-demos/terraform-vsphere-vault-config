@@ -1,7 +1,7 @@
-dn: CN={{.Username }},OU=VaultServiceAccounts,DC=hashicorp,DC=local
+dn: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
 objectClass: person
 objectClass: top
 cn: {{.Username}}
 sn: {{.Username}}
-memberOf: CN=vault_dynamic,OU=VaultServiceAccounts,DC=hashicorp
+memberOf: CN=vault_dynamic,OU=VaultManagedAccounts,DC=hashicorp
 userPassword: {{.Password}}
