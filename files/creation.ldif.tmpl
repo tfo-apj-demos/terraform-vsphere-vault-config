@@ -1,13 +1,10 @@
 dn: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
-changetype: add
 objectClass: top
 objectClass: person
 objectClass: organizationalPerson
-userPrincipalName: {{.Username}}@hashicorp.local
-sAMAccountName: {{.Username}}
+objectClass: user
 cn: {{.Username}}
 sn: {{.Username}}
-userPassword: {{.Password}}
 
 dn: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
 changetype: modify
@@ -17,9 +14,10 @@ unicodePwd::{{ printf "%q" .Password | utf16le | base64 }}
 replace: userAccountControl
 userAccountControl: 66048
 -
-
-dn: CN=vault_dynamic,OU=VaultManagedAccounts,DC=hashicorp,DC=local
+%{ for group_name in group_names ~}
+dn: CN=${group_name},OU=VaultManagedAccounts,DC=hashicorp,DC=local
 changetype: modify
 add: member
 member: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local 
 -
+%{ endfor ~}
