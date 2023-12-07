@@ -1,11 +1,16 @@
 dn: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
-objectClass: person
+changetype: add
 objectClass: top
+objectClass: person
+objectClass: organizationalPerson
+userPrincipalName: {{.Username}}@hashicorp.local
+sAMAccountName: {{.Username}}
 cn: {{.Username}}
 sn: {{.Username}}
 userPassword: {{.Password}}
 
 dn: CN=vault_dynamic,OU=VaultManagedAccounts,DC=hashicorp,DC=local
 changetype: modify
-add: uniqueMember
-uniqueMember: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
+add: member
+member: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local 
+-
