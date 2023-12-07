@@ -3,7 +3,7 @@ resource "vault_ldap_secret_backend" "config" {
   path         = var.ldap_path
   binddn       = var.ldap_binddn
   bindpass     = var.ldap_bindpass
-  url          = "ldaps://hashicorp.local"
+  url          = "ldaps://dc-0.hashicorp.local" # have to provide the server here to match the certificate
   userdn       = var.ldap_userdn
 
 }
