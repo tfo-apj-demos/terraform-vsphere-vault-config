@@ -9,9 +9,9 @@ resource "vault_ldap_secret_backend" "this" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "default" {
-  mount         = vault_ldap_secret_backend.config.path
+  mount         = vault_ldap_secret_backend.this.path
   role_name     = var.ldap_role_name
-  creation_ldif = templatefile("${path.module}/files/creation.ldif", {
+  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
     group_names =  ["vault_dynamic"]
   })
   deletion_ldif = file("${path.module}/files/deletion.ldif")
@@ -22,9 +22,9 @@ resource "vault_ldap_secret_backend_dynamic_role" "default" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "vsphere" {
-  mount         = vault_ldap_secret_backend.config.path
+  mount         = vault_ldap_secret_backend.this.path
   role_name     = "vsphere_virtual_machine_lifecycle"
-  creation_ldif = templatefile("${path.module}/files/creation.ldif", {
+  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
     group_names =  ["vsphere_virtual_machine_lifecycle"]
   })
   deletion_ldif = file("${path.module}/files/deletion.ldif")
