@@ -1,6 +1,6 @@
-dn: CN={{.Username | replace "-" "" | replace "_" "" | replace "@" ""}},OU=Vault Service Accounts,DC=hashicorp,DC=local
+dn: cn={{.Username | replace "-" "" | replace "_" "" | replace "@" ""}},ou=Vault Service Accounts,dc=hashicorp,dc=local
 objectClass: person
 objectClass: top
 cn: {{.Username}} 
-sn: user
+sn: {{.Username}} 
 userPassword: {{.Password}}
