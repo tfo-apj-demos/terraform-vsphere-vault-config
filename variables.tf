@@ -1,3 +1,8 @@
+variable "ldap_url" {
+  description = "url for the LDAP connection"
+  type        = string
+}
+
 variable "ldap_path" {
   description = "The path for the LDAP backend"
   type        = string
@@ -31,4 +36,7 @@ variable "ldap_roles" {
   } ]
 }
 
-
+variable "ldap_groupdn" {
+  description = "DN of group for LDAP"
+  type        = string
+}
