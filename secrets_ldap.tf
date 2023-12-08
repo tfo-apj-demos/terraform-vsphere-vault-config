@@ -23,7 +23,7 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
 }
 
 resource "vault_ldap_secret_backend_static_role" "sr-app-demo-01" {
-  mount           = vault_ldap_secret_backend.config.path
+  mount           = vault_ldap_secret_backend.this.path
   username        = "static role app demo 01"
   dn              = "CN=static role app demo 01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "static role app demo 01"
