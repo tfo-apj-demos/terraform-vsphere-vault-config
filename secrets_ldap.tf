@@ -27,7 +27,7 @@ resource "vault_ldap_secret_backend_static_role" "sr-app-demo-01" {
   username        = "static role app demo 01"
   dn              = "CN=static role app demo 01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "sr-app-demo-01"
-  rotation_period = 1
+  rotation_period = 60
 }
 
 resource "vault_ldap_secret_backend_static_role" "sr-app-demo-02" {
@@ -35,7 +35,7 @@ resource "vault_ldap_secret_backend_static_role" "sr-app-demo-02" {
   username        = "static role app demo 02"
   dn              = "CN=static role app demo 02,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "sr-app-demo-02"
-  rotation_period = 20
+  rotation_period = 600
 }
 
 resource "vault_ldap_secret_backend_static_role" "sr-app-demo-03" {
@@ -43,5 +43,5 @@ resource "vault_ldap_secret_backend_static_role" "sr-app-demo-03" {
   username        = "static role app demo 03"
   dn              = "CN=static role app demo 03,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "sr-app-demo-03"
-  rotation_period = 30
+  rotation_period = 3600
 }
