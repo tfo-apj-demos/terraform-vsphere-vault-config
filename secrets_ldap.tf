@@ -9,7 +9,7 @@ resource "vault_ldap_secret_backend" "this" {
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "this" {
-  for_each  = tomap({ for role in var.ldap_roles: role.role_name => role })
+  for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
   mount     = vault_ldap_secret_backend.this.path
   role_name = each.value.role_name
   creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
@@ -20,4 +20,12 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   default_ttl       = 3600     # One hour
   max_ttl           = 8 * 3600 # Make it easy to see this is eight hours
   username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
+}
+
+resource "vault_ldap_secret_backend_static_role" "sr-app-demo-01" {
+  mount           = vault_ldap_secret_backend.config.path
+  username        = "static role app demo 01"
+  dn              = "CN=static role app demo 01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  role_name       = "static role app demo 01"
+  rotation_period = 60
 }

@@ -30,10 +30,10 @@ variable "ldap_roles" {
     role_name   = string
     group_names = list(string)
   }))
-  default = [ {
+  default = [{
     role_name   = "test"
-    group_names = ["a","b"]
-  } ]
+    group_names = ["a", "b"]
+  }]
 }
 
 variable "ldap_groupdn" {
