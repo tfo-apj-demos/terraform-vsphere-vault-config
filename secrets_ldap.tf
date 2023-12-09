@@ -22,26 +22,18 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
 }
 
-resource "vault_ldap_secret_backend_static_role" "sr-app-demo-01" {
+resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
   mount           = vault_ldap_secret_backend.this.path
-  username        = "static role app demo 01"
-  dn              = "CN=static role app demo 01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  role_name       = "sr-app-demo-01"
+  username        = "sr_vault_01"
+  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  role_name       = "sr_vault_01"
   rotation_period = 60
 }
 
-resource "vault_ldap_secret_backend_static_role" "sr-app-demo-02" {
+resource "vault_ldap_secret_backend_static_role" "sr_vault_02" {
   mount           = vault_ldap_secret_backend.this.path
-  username        = "static role app demo 02"
-  dn              = "CN=static role app demo 02,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  role_name       = "sr-app-demo-02"
-  rotation_period = 600
-}
-
-resource "vault_ldap_secret_backend_static_role" "sr-app-demo-03" {
-  mount           = vault_ldap_secret_backend.this.path
-  username        = "static role app demo 03"
-  dn              = "CN=static role app demo 03,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  role_name       = "sr-app-demo-03"
+  username        = "sr_vault_02"
+  dn              = "CN=sr_vault_02,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  role_name       = "sr_vault_02"
   rotation_period = 3600
 }
