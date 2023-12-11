@@ -18,12 +18,15 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies        = [
 
   ]
-  bound_claims = tomap([
-    "userinfo",
-    "groups"
-  ])
+  bound_claims = {
+    username = "username"
+  }
+  claim_mappings = {
+    "/token/username" = "username",
+    "/token/groups" = "groups"
+  }
   
-  user_claim            = "email"
+  user_claim            = "username"
   role_type             = "oidc"
   allowed_redirect_uris = [
     "http://localhost:8250/oidc/callback",
