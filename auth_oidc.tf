@@ -9,6 +9,7 @@ resource "vault_jwt_auth_backend" "this" {
   oidc_client_id     = "Ty0hFqlMC8FYWpkz8znBeZxu0qz05lno"
   oidc_client_secret = var.oidc_client_secret
   default_role       = "systems_engineer"
+
 }
 
 resource "vault_jwt_auth_backend_role" "this" {
@@ -23,4 +24,5 @@ resource "vault_jwt_auth_backend_role" "this" {
     "http://localhost:8250/oidc/callback",
     "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
   ]
+  verbose_oidc_logging = true
 }
