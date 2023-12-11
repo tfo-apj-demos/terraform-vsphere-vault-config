@@ -18,7 +18,10 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies        = [
 
   ]
-  bound_claims = "userinfo, groups"
+  bound_claims = tomap([
+    "userinfo",
+    "groups"
+  ])
   
   user_claim            = "email"
   role_type             = "oidc"
