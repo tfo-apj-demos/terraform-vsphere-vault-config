@@ -18,11 +18,20 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies        = [
 
   ]
-  user_claim            = "email"
+  bound_claims = {
+    username = "username"
+  }
+  claim_mappings = {
+    "/token/username" = "username",
+    "/token/groups" = "groups"
+  }
+  
+  user_claim            = "username"
   role_type             = "oidc"
   allowed_redirect_uris = [
     "http://localhost:8250/oidc/callback",
     "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
   ]
   verbose_oidc_logging = true
+  #groups_claim = "groups"
 }
