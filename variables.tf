@@ -30,13 +30,13 @@ variable "ldap_roles" {
     role_name   = string
     group_names = list(string)
   }))
-  default = [{
-    role_name   = "test"
-    group_names = ["a", "b"]
-  }]
 }
 
 variable "ldap_groupdn" {
   description = "DN of group for LDAP"
   type        = string
+}
+
+variable "oidc_client_secret" {
+  type = string
 }
