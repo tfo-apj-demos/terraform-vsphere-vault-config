@@ -19,12 +19,12 @@ resource "vault_jwt_auth_backend_role" "this" {
 
   ]
   bound_claims = {
-    "/userinfo/username" = "/userinfo/username",
-    "/userinfo/groups" = "/userinfo/groups",
+    "username" = "username",
+    "groups" = "groups",
   }
   claim_mappings = {
-    "/userinfo/username" = "userinfo/username",
-    "/userinfo/groups" = "userinfo/groups",
+    "username" = "username",
+    "groups" = "groups",
   }
   
   user_claim            = "sub"
