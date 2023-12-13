@@ -3,8 +3,8 @@ objectClass: top
 objectClass: person
 objectClass: organizationalPerson
 objectClass: user
-cn: {{.Username}}
-sn: {{.Username}}
+userPrincipalName: {{.Username}}@hashicorp.local
+sAMAccountName: {{.Username}}
 
 dn: CN={{.Username }},OU=VaultManagedAccounts,DC=hashicorp,DC=local
 changetype: modify
