@@ -13,9 +13,9 @@ resource "vault_jwt_auth_backend" "this" {
 }
 
 resource "vault_jwt_auth_backend_role" "this" {
-  backend               = vault_jwt_auth_backend.this.path
-  role_name             = "systems_engineer"
-  token_policies        = [
+  backend   = vault_jwt_auth_backend.this.path
+  role_name = "systems_engineer"
+  token_policies = [
 
   ]
   # bound_claims = {
@@ -26,9 +26,9 @@ resource "vault_jwt_auth_backend_role" "this" {
   #   "username" = "username",
   #   "groups" = "groups",
   # }
-  
-  user_claim            = "sub"
-  role_type             = "oidc"
+
+  user_claim = "sub"
+  role_type  = "oidc"
   allowed_redirect_uris = [
     "http://localhost:8250/oidc/callback",
     "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
