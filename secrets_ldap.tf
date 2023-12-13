@@ -25,7 +25,7 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
 resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
   mount           = vault_ldap_secret_backend.this.path
   username        = "sr_vault_01"
-  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  #dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "sr_vault_01"
   rotation_period = 604800
 }
@@ -33,7 +33,7 @@ resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
 resource "vault_ldap_secret_backend_static_role" "sr_vault_02" {
   mount           = vault_ldap_secret_backend.this.path
   username        = "sr_vault_02"
-  dn              = "CN=sr_vault_02,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  #dn              = "CN=sr_vault_02,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   role_name       = "sr_vault_02"
   rotation_period = 86400
 }
