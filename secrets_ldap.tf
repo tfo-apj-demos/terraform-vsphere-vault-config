@@ -30,6 +30,16 @@ resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
   rotation_period = 604800
 }
 
+resource "vault_ldap_secret_backend_static_role" "grant_testing" {
+  mount           = vault_ldap_secret_backend.this.path
+  role_name       = "grant_testing"
+  username        = "v_grant_testing"
+  #dn              = "CN=v_grant_testing,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  rotation_period = 600
+}
+
+
+
 resource "vault_password_policy" "active_directory" {
   # --- Working from https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
   name = "active_directory"
