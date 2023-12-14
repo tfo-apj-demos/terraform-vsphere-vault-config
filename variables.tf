@@ -40,3 +40,9 @@ variable "ldap_groupdn" {
 variable "oidc_client_secret" {
   type = string
 }
+
+variable "domain_admin_password" {
+  description = "Password for domain admin"
+  type        = string
+  sensitive   = true
+}
