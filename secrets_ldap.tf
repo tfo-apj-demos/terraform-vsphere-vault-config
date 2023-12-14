@@ -7,6 +7,7 @@ resource "vault_ldap_secret_backend" "this" {
   userdn          = var.ldap_userdn
   certificate     = file("${path.module}/ca_cert_dir/root_ca.pem")
   password_policy = vault_password_policy.active_directory.id
+  schema          = "ad"
 }
 
 resource "vault_ldap_secret_backend_dynamic_role" "this" {
