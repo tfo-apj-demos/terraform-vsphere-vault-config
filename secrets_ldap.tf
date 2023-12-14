@@ -1,11 +1,11 @@
 # --- Config for the LDAP secrets engine
 resource "vault_ldap_secret_backend" "this" {
-  path        = var.ldap_path
-  binddn      = var.ldap_binddn
-  bindpass    = var.ldap_bindpass
-  url         = var.ldap_url # have to provide the server here to match the certificate
-  userdn      = var.ldap_userdn
-  certificate = file("${path.module}/ca_cert_dir/root_ca.pem")
+  path            = var.ldap_path
+  binddn          = var.ldap_binddn
+  bindpass        = var.ldap_bindpass
+  url             = var.ldap_url # have to provide the server here to match the certificate
+  userdn          = var.ldap_userdn
+  certificate     = file("${path.module}/ca_cert_dir/root_ca.pem")
   password_policy = vault_password_policy.active_directory.id
 }
 
@@ -27,14 +27,14 @@ resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
   mount           = vault_ldap_secret_backend.this.path
   role_name       = "sr_vault_01"
   username        = "sr_vault_01"
-  dn = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   rotation_period = 604800
 }
 
 resource "vault_ldap_secret_backend_static_role" "grant_testing" {
-  mount           = vault_ldap_secret_backend.this.path
-  role_name       = "grant_testing"
-  username        = "v_grant_testing"
+  mount     = vault_ldap_secret_backend.this.path
+  role_name = "grant_testing"
+  username  = "v_grant_testing"
   #dn              = "CN=v_grant_testing,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   rotation_period = 600
 }
