@@ -47,7 +47,7 @@ resource "vault_ldap_secret_backend_static_role" "this1" {
 resource "vault_ldap_secret_backend_library_set" "this" {
   mount                        = vault_ldap_secret_backend.this.path
   name                         = "iis_dev_library"
-  service_account_names        = ["sr_vault_iis_dev_01", "sr_vault_iis_dev_02"]
+  service_account_names        = ["sr_vault_iis_dev_01@hashicorp.local", "sr_vault_iis_dev_02@hashicorp.local"]
   ttl                          = 3600 # One hour
   disable_check_in_enforcement = true
   max_ttl                      = 8 * 3600 # Makes it easy to see this is eight hours
