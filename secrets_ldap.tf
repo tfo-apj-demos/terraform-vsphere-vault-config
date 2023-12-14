@@ -25,7 +25,7 @@ resource "vault_password_policy" "active_directory" {
   EOT
 }
 
-esource "vault_ldap_secret_backend" "this" {
+resource "vault_ldap_secret_backend" "this" {
   path            = var.ldap_path
   binddn          = var.ldap_binddn
   bindpass        = var.ldap_bindpass
