@@ -23,13 +23,6 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
 }
 
-resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
-  mount           = vault_ldap_secret_backend.this.path
-  role_name       = "sr_vault_01"
-  username        = "sr_vault_01"
-  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  rotation_period = 604800
-}
 
 resource "vault_ldap_secret_backend_static_role" "grant_testing" {
   mount     = vault_ldap_secret_backend.this.path
