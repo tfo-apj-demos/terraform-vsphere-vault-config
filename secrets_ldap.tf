@@ -23,6 +23,13 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
 }
 
+resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
+  mount           = vault_ldap_secret_backend.this.path
+  role_name       = "sr_vault_01"
+  username        = "sr_vault_01"
+  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  rotation_period = 604800
+}
 
 resource "vault_ldap_secret_backend_static_role" "grant_testing" {
   mount     = vault_ldap_secret_backend.this.path
@@ -31,8 +38,6 @@ resource "vault_ldap_secret_backend_static_role" "grant_testing" {
   #dn              = "CN=v_grant_testing,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
   rotation_period = 600
 }
-
-
 
 resource "vault_password_policy" "active_directory" {
   # --- Working from https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
@@ -57,21 +62,4 @@ resource "vault_password_policy" "active_directory" {
       min-chars = 1
     }
   EOT
-}
-
-# 2nd ldap secret engine
-resource "vault_ldap_secret_backend" "ldap_new" {
-  path        = "ldap_new"
-  binddn      = "CN=Administrator,CN=Users,DC=hashicorp,DC=local"
-  bindpass    = var.domain_admin_password
-  url         = var.ldap_url # have to provide the server here to match the certificate
-  userdn      = var.ldap_userdn
-  certificate = file("${path.module}/ca_cert_dir/root_ca.pem")
-}
-
-resource "vault_ldap_secret_backend_static_role" "sr_vault_02" {
-  mount           = vault_ldap_secret_backend.ldap_new.path
-  role_name       = "sr_vault_02"
-  username        = "sr_vault_02"
-  rotation_period = 86400
 }
