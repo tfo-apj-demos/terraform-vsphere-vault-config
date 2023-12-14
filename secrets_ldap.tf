@@ -10,6 +10,23 @@ resource "vault_ldap_secret_backend" "this" {
   schema          = "ad"
 }
 
+resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
+  mount           = vault_ldap_secret_backend.this.path
+  role_name       = "sr_vault_01"
+  username        = "sr_vault_01"
+  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
+  rotation_period = 604800
+}
+
+resource "vault_ldap_secret_backend_library_set" "iis_dev" {
+  mount                        = vault_ldap_secret_backend.this.path
+  name                         = "iis_dev_library"
+  service_account_names        = ["sr_vault_iis_dev_01", "sr_vault_iis_dev_02"]
+  ttl                          = 3600 # One hour
+  disable_check_in_enforcement = true
+  max_ttl                      = 8 * 3600 # Makes it easy to see this is eight hours
+}
+
 resource "vault_ldap_secret_backend_dynamic_role" "this" {
   for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
   mount     = vault_ldap_secret_backend.this.path
@@ -22,22 +39,6 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   default_ttl       = 3600     # One hour
   max_ttl           = 8 * 3600 # Make it easy to see this is eight hours
   username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
-}
-
-resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
-  mount           = vault_ldap_secret_backend.this.path
-  role_name       = "sr_vault_01"
-  username        = "sr_vault_01"
-  dn              = "CN=sr_vault_01,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  rotation_period = 604800
-}
-
-resource "vault_ldap_secret_backend_static_role" "grant_testing" {
-  mount     = vault_ldap_secret_backend.this.path
-  role_name = "grant_testing"
-  username  = "v_grant_testing"
-  #dn              = "CN=v_grant_testing,OU=VaultManagedAccounts,DC=hashicorp,DC=local"
-  rotation_period = 600
 }
 
 resource "vault_password_policy" "active_directory" {
