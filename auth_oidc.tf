@@ -24,7 +24,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   ]
 
   claim_mappings = {
-    "userinfo.username" = "username"
+    "userinfo[\"username\"]" = "username"
   }
 
   user_claim = "userinfo.username"
