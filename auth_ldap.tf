@@ -6,5 +6,6 @@ resource "vault_ldap_auth_backend" "ldap" {
   binddn         = var.ldap_binddn
   bindpass       = var.ldap_bindpass
   groupdn        = var.ldap_groupdn
-  token_policies = ["default"]
+  certificate    = file("${path.module}/ca_cert_dir/root_ca.pem")
+  token_policies = ["root"]
 }
