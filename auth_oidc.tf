@@ -27,7 +27,7 @@ resource "vault_jwt_auth_backend_role" "this" {
     "userinfo.username" = "username"
   }
 
-  user_claim = "sub"
+  user_claim = "username"
   role_type  = "oidc"
   allowed_redirect_uris = [
     "http://localhost:8250/oidc/callback",
