@@ -20,7 +20,9 @@ resource "vault_jwt_auth_backend_role" "this" {
   ]
   oidc_scopes = [
     "username",
-    "groups"
+    "groups",
+    "openid",
+    "profile"
   ]
   # bound_claims = {
   #   "username" = "username",
