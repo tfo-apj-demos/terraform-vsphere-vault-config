@@ -20,27 +20,19 @@ resource "vault_jwt_auth_backend_role" "this" {
   ]
   oidc_scopes = [
     "username",
-    "groups",
-    "openid",
-    "profile"
+    "groups"
   ]
 
-  # claim_mappings = {
-  #   "username" = "username",
-  #   "groups" = "groups",
-  # }
-
   claim_mappings = {
-    "groups" = "groups",
     "username" = "userinfo/username"
   }
 
-  user_claim = "sub"
+  user_claim = "userinfo/username"
   role_type  = "oidc"
   allowed_redirect_uris = [
     "http://localhost:8250/oidc/callback",
     "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
   ]
   verbose_oidc_logging = true
-  groups_claim = "groups"
+  #groups_claim = "groups"
 }
