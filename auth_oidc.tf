@@ -18,6 +18,10 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies = [
 
   ]
+  oidc_scopes = [
+    "username",
+    "groups"
+  ]
   # bound_claims = {
   #   "username" = "username",
   #   "groups" = "groups",
