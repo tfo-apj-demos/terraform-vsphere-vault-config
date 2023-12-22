@@ -18,14 +18,10 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies = [
 
   ]
-  # bound_claims = {
-  #   "username" = "username",
-  #   "groups" = "groups",
-  # }
-  # claim_mappings = {
-  #   "username" = "username",
-  #   "groups" = "groups",
-  # }
+
+  claim_mappings = {
+    "username" = "username"
+  }
 
   user_claim = "sub"
   role_type  = "oidc"
