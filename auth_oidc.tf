@@ -25,7 +25,6 @@ resource "vault_jwt_auth_backend_role" "this" {
 
   claim_mappings = {
     "username" = "username"
-    #"groups" = "groups"
   }
 
   user_claim = "username"
@@ -35,5 +34,5 @@ resource "vault_jwt_auth_backend_role" "this" {
     "https://vault.hashicorp.local:8200/ui/vault/auth/oidc/oidc/callback",
   ]
   verbose_oidc_logging = true
-  #groups_claim = "groups"
+  groups_claim = "groups"
 }
