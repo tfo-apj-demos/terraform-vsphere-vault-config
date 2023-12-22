@@ -35,6 +35,9 @@ resource "vault_identity_group_alias" "team_se" {
 resource "vault_identity_group" "gcve_admins" {
   type = "external"
   name = "gcve-admins"
+  policies = [
+    "admin"
+  ]
 }
 
 resource "vault_identity_group_alias" "gcve_admins" {
