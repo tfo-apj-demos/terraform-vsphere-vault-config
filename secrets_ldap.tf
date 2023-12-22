@@ -1,34 +1,4 @@
 # --- Config for the LDAP secrets engine
-resource "vault_ldap_secret_backend" "this" {
-  path        = var.ldap_path
-  binddn      = var.ldap_binddn
-  bindpass    = var.ldap_bindpass
-  url         = var.ldap_url # have to provide the server here to match the certificate
-  userdn      = var.ldap_userdn
-  certificate = file("${path.module}/ca_cert_dir/root_ca.pem")
-  password_policy = vault_password_policy.active_directory.id
-}
-
-resource "vault_ldap_secret_backend_dynamic_role" "this" {
-  for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
-  mount     = vault_ldap_secret_backend.this.path
-  role_name = each.value.role_name
-  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
-    group_names = each.value.group_names
-  })
-  deletion_ldif     = file("${path.module}/files/deletion.ldif")
-  rollback_ldif     = file("${path.module}/files/rollback.ldif")
-  default_ttl       = 3600     # One hour
-  max_ttl           = 8 * 3600 # Make it easy to see this is eight hours
-  username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
-}
-
-resource "vault_ldap_secret_backend_static_role" "sr_vault_01" {
-  mount           = vault_ldap_secret_backend.this.path
-  role_name       = "sr_vault_01"
-  username        = "sr_vault_01"
-  rotation_period = 604800
-}
 
 resource "vault_password_policy" "active_directory" {
   # --- Working from https://learn.microsoft.com/en-us/windows/security/threat-protection/security-policy-settings/password-must-meet-complexity-requirements
@@ -55,19 +25,44 @@ resource "vault_password_policy" "active_directory" {
   EOT
 }
 
-# 2nd ldap secret engine
-resource "vault_ldap_secret_backend" "ldap_new" {
-  path        = "ldap_new"
-  binddn      = "CN=Administrator,CN=Users,DC=hashicorp,DC=local"
-  bindpass    = var.domain_admin_password
-  url         = var.ldap_url # have to provide the server here to match the certificate
-  userdn      = var.ldap_userdn
-  certificate = file("${path.module}/ca_cert_dir/root_ca.pem")
+resource "vault_ldap_secret_backend" "this" {
+  path            = var.ldap_path
+  binddn          = var.ldap_binddn
+  bindpass        = var.ldap_bindpass
+  url             = var.ldap_url # have to provide the server here to match the certificate
+  userdn          = var.ldap_userdn
+  certificate     = file("${path.module}/ca_cert_dir/root_ca.pem")
+  password_policy = vault_password_policy.active_directory.id
+  schema          = "ad"
 }
 
-resource "vault_ldap_secret_backend_static_role" "sr_vault_02" {
-  mount           = vault_ldap_secret_backend.ldap_new.path
-  role_name       = "sr_vault_02"
-  username        = "sr_vault_02"
-  rotation_period = 86400
+resource "vault_ldap_secret_backend_static_role" "this" {
+  mount           = vault_ldap_secret_backend.this.path
+  role_name       = "sr_vault_01"
+  username        = "sr_vault_01"
+  dn              = "CN=sr_vault_01,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
+  rotation_period = 604800
+}
+
+resource "vault_ldap_secret_backend_library_set" "this" {
+  mount                        = vault_ldap_secret_backend.this.path
+  name                         = "iis_dev_library"
+  service_account_names        = ["sr_vault_iis_dev_01@hashicorp.local", "sr_vault_iis_dev_02@hashicorp.local"]
+  ttl                          = 3600 # One hour
+  disable_check_in_enforcement = true
+  max_ttl                      = 8 * 3600 # Makes it easy to see this is eight hours
+}
+
+resource "vault_ldap_secret_backend_dynamic_role" "this" {
+  for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
+  mount     = vault_ldap_secret_backend.this.path
+  role_name = each.value.role_name
+  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
+    group_names = each.value.group_names
+  })
+  deletion_ldif     = file("${path.module}/files/deletion.ldif")
+  rollback_ldif     = file("${path.module}/files/rollback.ldif")
+  default_ttl       = 3600     # One hour
+  max_ttl           = 8 * 3600 # Make it easy to see this is eight hours
+  username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
 }
