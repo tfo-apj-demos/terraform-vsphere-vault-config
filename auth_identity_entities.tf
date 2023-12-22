@@ -32,7 +32,7 @@ resource "vault_identity_group_alias" "team_se" {
 
 resource "vault_identity_group" "gcve_admins" {
   type = "external"
-  name = "team-se"
+  name = "gcve-admins"
 }
 
 resource "vault_identity_group_alias" "gcve_admins" {
