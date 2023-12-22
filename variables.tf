@@ -46,3 +46,13 @@ variable "domain_admin_password" {
   type        = string
   sensitive   = true
 }
+
+variable "tfc_organization" {
+  type = string
+  default = "tfo-apj-demos"
+}
+
+variable "tfc_workspace" {
+  type = string
+  default = "github-identities"
+}

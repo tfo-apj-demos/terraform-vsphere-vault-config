@@ -1,31 +1,42 @@
-# locals {
-#   github_usernames = flatten(concat(
-#     [ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "team-se" ],
-#     [ for team in data.github_organization_teams.team_se.teams: team.members if team.name == "apac-se" ]
-#   ))
-# }
+locals {
+  github_usernames = toset(data.tfe_outputs.github_identities.values.github_usernames)
+}
 
-# # --- Lookup our GitHub org for teams and memberships
-# data "github_organization_teams" "team_se" {
-#   root_teams_only = true
-#   summary_only = false
-#   results_per_page = 20
-# }
+data "tfe_outputs" "github_identities" {
+  organization = var.tfc_organization
+  workspace = var.tfc_workspace
+}
 
-# data "github_user" "team_se" {
-#   for_each = toset(local.github_usernames)
-#   username = each.value
-# }
+resource "vault_identity_entity_alias" "se" {
+  for_each = vault_identity_entity.se
+  name = each.value.name
+  mount_accessor = vault_jwt_auth_backend.this.accessor
+  canonical_id = each.value.id
+}
 
-# # --- Create entities and aliases in Vault since the OIDC provider needs an entity
-# resource "vault_identity_entity_alias" "se" {
-#   for_each = vault_identity_entity.se
-#   name = each.value.name
-#   mount_accessor = vault_jwt_auth_backend.this.accessor
-#   canonical_id = each.value.id
-# }
+resource "vault_identity_entity" "se" {
+  for_each = nonsensitive(local.github_usernames)
+  name = each.value
+}
 
-# resource "vault_identity_entity" "se" {
-#   for_each = toset(local.github_usernames)
-#   name = each.value
-# }
+resource "vault_identity_group" "team_se" {
+  type = "external"
+  name = "team-se"
+}
+
+resource "vault_identity_group_alias" "team_se" {
+  name           = "team-se"
+  mount_accessor = vault_jwt_auth_backend.this.accessor
+  canonical_id   = vault_identity_group.team_se.id
+}
+
+resource "vault_identity_group" "gcve_admins" {
+  type = "external"
+  name = "team-se"
+}
+
+resource "vault_identity_group_alias" "gcve_admins" {
+  name           = "gcve-admins"
+  mount_accessor = vault_jwt_auth_backend.this.accessor
+  canonical_id   = vault_identity_group.gcve_admins.id
+}
