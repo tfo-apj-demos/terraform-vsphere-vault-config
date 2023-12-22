@@ -25,6 +25,7 @@ resource "vault_jwt_auth_backend_role" "this" {
 
   claim_mappings = {
     "username" = "username"
+    "groups" = "groups"
   }
 
   user_claim = "username"
