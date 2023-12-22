@@ -21,24 +21,24 @@ resource "vault_identity_entity" "se" {
 }
 
 # --- Create external groups based on OIDC group claims.
-# resource "vault_identity_group" "team_se" {
-#   type = "external"
-#   name = "team-se"
-# }
+resource "vault_identity_group" "team_se" {
+  type = "external"
+  name = "team-se"
+}
 
-# resource "vault_identity_group_alias" "team_se" {
-#   name           = "team-se"
-#   mount_accessor = vault_jwt_auth_backend.this.accessor
-#   canonical_id   = vault_identity_group.team_se.id
-# }
+resource "vault_identity_group_alias" "team_se" {
+  name           = "team-se"
+  mount_accessor = vault_jwt_auth_backend.this.accessor
+  canonical_id   = vault_identity_group.team_se.id
+}
 
-# resource "vault_identity_group" "gcve_admins" {
-#   type = "external"
-#   name = "gcve-admins"
-# }
+resource "vault_identity_group" "gcve_admins" {
+  type = "external"
+  name = "gcve-admins"
+}
 
-# resource "vault_identity_group_alias" "gcve_admins" {
-#   name           = "gcve-admins"
-#   mount_accessor = vault_jwt_auth_backend.this.accessor
-#   canonical_id   = vault_identity_group.gcve_admins.id
-# }
+resource "vault_identity_group_alias" "gcve_admins" {
+  name           = "gcve-admins"
+  mount_accessor = vault_jwt_auth_backend.this.accessor
+  canonical_id   = vault_identity_group.gcve_admins.id
+}
