@@ -18,7 +18,7 @@ path "/jwt/role/{{ identity.entity.name }}" {
         "ldap_reader"
       ]
     }
-    denied_parameters = {
-      policies
-    }
+    // denied_parameters = {
+    //   policies = []
+    // }
 }
