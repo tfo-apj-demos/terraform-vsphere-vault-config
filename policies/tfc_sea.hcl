@@ -6,8 +6,7 @@ path "/jwt/role/{{ identity.entity.name }}" {
       "update",
       "delete"
     ]
-    allowed_parameters =
-    {
+    allowed_parameters = {
       role_type  = "jwt",
       bound_claims_type = "glob",
       user_claim = []
