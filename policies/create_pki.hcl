@@ -1,14 +1,19 @@
 path "pki/*" {
-  capabilities = ["read", "list"]
+  capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
 
-path "pki/intermediate/set-signed" {
-    capabilities = ["update"]
-}
-path "pki/sign/gcve" {
-  capabilities = ["create", "read"]
+path "pki/roles/*" {
+  capabilities = ["create", "read", "update", "delete", "list"]
 }
 
-path "pki/issue/gcve" {
-  capabilities = ["create"]
+path "pki/issue/*" {
+  capabilities = ["create", "update"]
+}
+
+path "pki/revoke" {
+  capabilities = ["update"]
+}
+
+path "pki/tidy" {
+  capabilities = ["update"]
 }
