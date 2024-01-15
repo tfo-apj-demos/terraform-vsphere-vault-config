@@ -38,10 +38,10 @@ resource "vault_pki_secret_backend_intermediate_cert_request" "this" {
 }
 
 # Set the signed certificate from the external Root CA
-resource "vault_pki_secret_backend_intermediate_set_signed" "example" {
+resource "vault_pki_secret_backend_intermediate_set_signed" "this" {
   backend     = vault_mount.intermediate.path
-  certificate = <<-EOT
-    -----BEGIN CERTIFICATE-----
+  certificate =<<EOH
+-----BEGIN CERTIFICATE-----
 MIIDCjCCAo+gAwIBAgIUXC2WYhesZrf/5Rv4fVozFqeeE60wCgYIKoZIzj0EAwMw
 ZzELMAkGA1UEBhMCQVUxDzANBgNVBAcTBlN5ZG5leTEOMAwGA1UEChMFV1dURk8x
 FjAUBgNVBAsMDVRGT19BUEpfREVNT1MxHzAdBgNVBAMTFkhDUCBWYXVsdCBJbnRl
@@ -60,7 +60,7 @@ BAMDA2kAMGYCMQC4WznH2Xy70/F0IF42SyjH3QZT6/Nta3WLt1OgLnTDLkRcZ0FN
 MAdq9mOk9vMDYekCMQD41cpVbxjQMz/aNv6QgSrRKfDDzBkFvde1zXrfGU1vkDtG
 BlW6IO9oBV1eXnAVO/Y=
 -----END CERTIFICATE-----
-  EOT
+EOH
 }
 
 resource "vault_pki_secret_backend_config_urls" "this" {
