@@ -156,7 +156,6 @@ variable "max_ttl" {
 variable "external_root_ca_url" {
   description = "URL of the external Root CA's issuing certificate endpoint"
   type        = string
-  // You can provide a default value or leave it without a default
-  // default = "http://example.com/root-ca"
+    default = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/pki"
 }
 

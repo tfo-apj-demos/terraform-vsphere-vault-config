@@ -65,7 +65,7 @@ BlW6IO9oBV1eXnAVO/Y=
 
 resource "vault_pki_secret_backend_config_urls" "this" {
   backend = vault_mount.intermediate.path
-  issuing_certificates    = [var.external_root_ca_url]
+  issuing_certificates    = ["${var.external_root_ca_url}/ca"]
   crl_distribution_points = ["${var.external_root_ca_url}/crl"]
 }
 
