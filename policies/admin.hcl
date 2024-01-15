@@ -57,10 +57,6 @@ path "sys/mounts" {
 path "+/intermediate/set-signed" {
 	capabilities = ["create", "update", "delete", "sudo" ]
 }
-path "pki/*" {
-	capabilities = ["create", "update", "delete", "sudo" ]
-}
-
 
 # --- Issue creds for any engine
 path "+/creds/+" {
