@@ -1,19 +1,14 @@
-path "demo-pki-*" {
+path "pki/*" {
   capabilities = ["read", "list"]
 }
 
-path "demo-pki-intermediate/sign/my_role" {
-  capabilities = ["create", "update"]
+path "pki/intermediate/set-signed" {
+    capabilities = ["update"]
+}
+path "pki/sign/gcve" {
+  capabilities = ["create", "read"]
 }
 
-path "demo-pki-intermediate/issue/my_role" {
-  capabilities = ["create"]
-}
-
-path "demo-pki-root/sign/my_role" {
-  capabilities = ["create", "update"]
-}
-
-path "demo-pki-root/issue/my_role" {
+path "pki/issue/gcve" {
   capabilities = ["create"]
 }
