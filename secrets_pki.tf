@@ -33,6 +33,6 @@ resource "vault_mount" "intermediate" {
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "this" {
   backend     = vault_mount.intermediate.path
-  type        = "vault_pki_secret_backend_root_cert.this.type"
+  type        = "internal"
   common_name = var.intermediate_ca_common_name
 }
