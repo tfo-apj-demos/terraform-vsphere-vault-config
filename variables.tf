@@ -56,3 +56,99 @@ variable "tfc_workspace" {
   type = string
   default = "github-identities"
 }
+
+variable "pki_root_path" {
+  description = "Path for the Root PKI secret engine mount"
+  type        = string
+  default     = "demo-pki-root"
+}
+
+variable "pki_intermediate_path" {
+  description = "Path for the Intermediate PKI secret engine mount"
+  type        = string
+  default     = "demo-pki-intermediate"
+}
+
+variable "default_lease_ttl" {
+  description = "Default lease TTL in seconds"
+  type        = number
+  default     = 63113904
+}
+
+variable "max_lease_ttl" {
+  description = "Max lease TTL in seconds"
+  type        = number
+  default     = 63113904
+}
+
+variable "root_ca_common_name" {
+  description = "Common name for the Root CA"
+  type        = string
+  default     = "Root CA Vault PKI Demo"
+}
+
+variable "intermediate_ca_common_name" {
+  description = "Common name for the Intermediate CA"
+  type        = string
+  default     = "SubOrg Intermediate CA"
+}
+
+variable "pki_key_bits" {
+  description = "Number of bits for the key"
+  type        = number
+  default     = 4096
+}
+
+variable "pki_ttl" {
+  description = "Time-to-live for the certificate"
+  type        = string
+  default     = "31556952"
+}
+
+variable "organization" {
+  description = "Organization name"
+  type        = string
+  default     = "tfo-apj-demos"
+}
+
+variable "ou" {
+  description = "Organizational Unit"
+  type        = string
+  default     = "Solutions Engineering & Architecture"
+}
+
+variable "country" {
+  description = "Country code"
+  type        = string
+  default     = "AU"
+}
+
+variable "locality" {
+  description = "Locality or city name"
+  type        = string
+  default     = "Sydney"
+}
+
+variable "province" {
+  description = "Province or state name"
+  type        = string
+  default     = "NSW"
+}
+
+variable "role_name" {
+  description = "Name of the role"
+  type        = string
+  default     = "my_role"
+}
+
+variable "allowed_domains" {
+  description = "List of allowed domains for the role"
+  type        = list(string)
+  default     = ["hashicorp.local"]
+}
+
+variable "max_ttl" {
+  description = "Maximum TTL for the role"
+  type        = number
+  default     = 180
+}
