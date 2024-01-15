@@ -152,3 +152,11 @@ variable "max_ttl" {
   type        = number
   default     = 180
 }
+
+variable "external_root_ca_url" {
+  description = "URL of the external Root CA's issuing certificate endpoint"
+  type        = string
+  // You can provide a default value or leave it without a default
+  // default = "http://example.com/root-ca"
+}
+
