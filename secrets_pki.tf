@@ -1,4 +1,4 @@
-resource "vault_mount" "root" {
+/*resource "vault_mount" "root" {
   path                      = var.pki_root_path
   type                      = "pki"
   description               = "This is an example Root PKI secret engine mount"
@@ -21,7 +21,7 @@ resource "vault_pki_secret_backend_root_cert" "this" {
   country            = var.country
   locality           = var.locality
   province           = var.province
-}
+}*/
 
 resource "vault_mount" "intermediate" {
   path                      = var.pki_intermediate_path
@@ -33,39 +33,6 @@ resource "vault_mount" "intermediate" {
 
 resource "vault_pki_secret_backend_intermediate_cert_request" "this" {
   backend     = vault_mount.intermediate.path
-  type        = vault_pki_secret_backend_root_cert.this.type
+  type        = "vault_pki_secret_backend_root_cert.this.type"
   common_name = var.intermediate_ca_common_name
-}
-
-resource "vault_pki_secret_backend_root_sign_intermediate" "this" {
-  backend      = vault_mount.root.path
-  csr          = vault_pki_secret_backend_intermediate_cert_request.this.csr
-  common_name  = var.intermediate_ca_common_name
-  ou           = var.ou
-  organization = var.organization
-  country      = var.country
-  locality     = var.locality
-  province     = var.province
-  revoke       = true
-}
-
-resource "vault_pki_secret_backend_intermediate_set_signed" "example" {
-  backend     = vault_mount.intermediate.path
-  certificate = vault_pki_secret_backend_root_sign_intermediate.this.certificate
-}
-
-resource "vault_pki_secret_backend_config_urls" "this" {
-  backend = vault_mount.intermediate.path
-  issuing_certificates = ["http://127.0.0.1:8200/v1/pki/ca"]
-  crl_distribution_points = ["http://127.0.0.1:8200/v1/pki/crl"]
-}
-
-resource "vault_pki_secret_backend_role" "this" {
-  backend          = vault_mount.intermediate.path
-  name             = var.role_name
-  allowed_domains  = var.allowed_domains
-  allow_subdomains = true
-  max_ttl          = var.max_ttl
-  organization     = [var.organization]
-  ou               = [var.ou]
 }
