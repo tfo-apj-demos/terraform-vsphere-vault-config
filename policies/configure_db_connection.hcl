@@ -1,4 +1,4 @@
-path "postgres/config/{{identity.entity.aliases.${vault_jwt_auth_backend.jwt.accessor}.name}}-*" {
+path "postgres/config/{{identity.entity.aliases.database_fc9eb6d8.name}}-*" {
   capabilities = [
     "create",
     "read",
@@ -7,7 +7,7 @@ path "postgres/config/{{identity.entity.aliases.${vault_jwt_auth_backend.jwt.acc
   ]
 }
 
-path "postgres/roles/{{identity.entity.aliases.${vault_jwt_auth_backend.jwt.accessor}.name}}-*" {
+path "postgres/roles/{{identity.entity.aliases.database_fc9eb6d8.name}}-*" {
   capabilities = [
     "create",
     "read",
@@ -16,7 +16,7 @@ path "postgres/roles/{{identity.entity.aliases.${vault_jwt_auth_backend.jwt.acce
   ]
 }
 
-path "postgres/rotate-root/{{identity.entity.aliases.${vault_jwt_auth_backend.jwt.accessor}.name}}-*" {
+path "postgres/rotate-root/{{identity.entity.aliases.database_fc9eb6d8.name}}-*" {
   capabilities = [
     "update"
   ]
