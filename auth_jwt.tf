@@ -10,7 +10,8 @@ resource "vault_jwt_auth_backend_role" "tfc" {
   backend   = vault_jwt_auth_backend.tfc.path
   role_name = "tfc"
   token_policies = [
-    "create_child_token"
+    "create_child_token",
+    "configure_db_connection"
   ]
 
   bound_audiences = [
