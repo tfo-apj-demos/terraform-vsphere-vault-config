@@ -58,7 +58,6 @@ path "+/intermediate/set-signed" {
 	capabilities = ["create", "update", "delete", "sudo" ]
 }
 
-
 # --- Issue creds for any engine
 path "+/creds/+" {
 	capabilities = ["read"]
