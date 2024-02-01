@@ -1,4 +1,4 @@
-path "postgres/config/{{identity.entity.name}}" {
+path "postgres/config/{{identity.entity.name}}-*" {
   capabilities = [
     "create",
     "read",
@@ -7,7 +7,7 @@ path "postgres/config/{{identity.entity.name}}" {
   ]
 }
 
-path "postgres/roles/{{identity.entity.name}}" {
+path "postgres/roles/{{identity.entity.name}}-*" {
   capabilities = [
     "create",
     "read",
@@ -16,7 +16,7 @@ path "postgres/roles/{{identity.entity.name}}" {
   ]
 }
 
-path "potgres/rotate-root/{{identity.entity.name}}" {
+path "potgres/rotate-root/{{identity.entity.name}}-*" {
   capabilities = [
     "update"
   ]
