@@ -22,7 +22,7 @@ resource "vault_jwt_auth_backend_role" "tfc" {
     sub                       = "organization:tfo-apj-demos:*"
     terraform_organization_id = "org-6nfrqkZhPPHJWG5h"
   }
-  user_claim = "terraform_full_workspace"
+  user_claim = "terraform_workspace_id"
   role_type  = "jwt"
 
   claim_mappings = {
