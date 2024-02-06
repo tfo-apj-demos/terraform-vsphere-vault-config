@@ -21,4 +21,3 @@ path "postgres/rotate-root/{{identity.entity.aliases.auth_jwt_18abb2d6.name}}-*"
     "update"
   ]
 }
-
