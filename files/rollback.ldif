@@ -1,2 +1,2 @@
-dn: cn={{.Username}},OU=Vault Service Accounts,DC=hashicorp,DC=local
+dn: cn={{.Username}},OU=Vault Managed Accounts,DC=hashicorp,DC=local
 changetype: delete
