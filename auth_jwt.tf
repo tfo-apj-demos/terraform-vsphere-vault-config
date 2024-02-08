@@ -11,7 +11,9 @@ resource "vault_jwt_auth_backend_role" "tfc" {
   role_name = "tfc"
   token_policies = [
     "create_child_token",
-    "configure_db_connection"
+    "configure_db_connection",
+    "read_db_creds",
+    "create_workspace_policy"
   ]
 
   bound_audiences = [
