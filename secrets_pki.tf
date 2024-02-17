@@ -1,11 +1,11 @@
 resource "vault_mount" "pki" {
-	type = "pki"
-	path = "pki"
+  type = "pki"
+  path = "pki"
 }
 
 resource "vault_pki_secret_backend_config_ca" "this" {
-	backend = vault_mount.pki.path
-	pem_bundle = <<EOH
+  backend    = vault_mount.pki.path
+  pem_bundle = <<EOH
 -----BEGIN CERTIFICATE-----
 MIICJzCCAaygAwIBAgIQbn3a3bybm4RDhMIGFhZPcTAKBggqhkjOPQQDBDBBMRUw
 EwYKCZImiZPyLGQBGRYFbG9jYWwxGTAXBgoJkiaJk/IsZAEZFgloYXNoaWNvcnAx
@@ -36,8 +36,8 @@ EOH
 }*/
 
 resource "vault_pki_secret_backend_intermediate_set_signed" "this" {
-	backend = vault_mount.pki.path
-	certificate =<<EOH
+  backend     = vault_mount.pki.path
+  certificate = <<EOH
 -----BEGIN CERTIFICATE-----
 MIID7TCCA3KgAwIBAgITPAAAAAqqFlYu2+JURQAAAAAACjAKBggqhkjOPQQDBDBB
 MRUwEwYKCZImiZPyLGQBGRYFbG9jYWwxGTAXBgoJkiaJk/IsZAEZFgloYXNoaWNv
@@ -66,17 +66,17 @@ EOH
 }
 
 resource "vault_pki_secret_backend_role" "gcve" {
-	name = "gcve"
-	backend = vault_mount.pki.path
-	max_ttl = "259200"
-	ttl = "259200"
-	allowed_domains = [
-		"hashicorp.local"
-	]
-	allowed_uri_sans = [
-		"*.hashicorp.local",
-	]
-	allow_ip_sans = true
-	allow_subdomains = true
-	enforce_hostnames = false
+  name    = "gcve"
+  backend = vault_mount.pki.path
+  max_ttl = "259200"
+  ttl     = "259200"
+  allowed_domains = [
+    "hashicorp.local"
+  ]
+  allowed_uri_sans = [
+    "*.hashicorp.local",
+  ]
+  allow_ip_sans     = true
+  allow_subdomains  = true
+  enforce_hostnames = false
 }
