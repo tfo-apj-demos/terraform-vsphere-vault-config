@@ -48,12 +48,12 @@ variable "domain_admin_password" {
 }
 
 variable "tfc_organization" {
-  type = string
+  type    = string
   default = "tfo-apj-demos"
 }
 
 variable "tfc_workspace" {
-  type = string
+  type    = string
   default = "github-identities"
 }
 
@@ -156,6 +156,6 @@ variable "max_ttl" {
 variable "external_root_ca_url" {
   description = "URL of the external Root CA's issuing certificate endpoint"
   type        = string
-    default = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/pki"
+  default     = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/pki"
 }
 
