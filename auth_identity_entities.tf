@@ -24,6 +24,9 @@ resource "vault_identity_entity" "se" {
 resource "vault_identity_group" "team_se" {
   type = "external"
   name = "team-se"
+  policies = [
+    "team-sea"
+  ]
 }
 
 resource "vault_identity_group_alias" "team_se" {
