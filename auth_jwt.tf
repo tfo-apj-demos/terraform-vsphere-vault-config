@@ -32,4 +32,5 @@ resource "vault_jwt_auth_backend_role" "tfc" {
     terraform_workspace_id = "terraform_workspace_id"
   }
   token_ttl = 8*60*60 # 8 hours by 60 minutes by 60 seconds
+  token_period = 8*60*60
 }
