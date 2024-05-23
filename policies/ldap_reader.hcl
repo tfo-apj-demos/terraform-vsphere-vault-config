@@ -17,6 +17,11 @@ path "ldap/static-role/+" {
   capabilities = ["read", "list", "create", "update", "delete"]
 }
 
+# --- Fetch static role credentials
+path "ldap/static-cred/+" {
+  capabilities = ["read", "list"]
+}
+
 # --- Read and write library sets in the LDAP secret engine
 path "ldap/library-set/+" {
   capabilities = ["read", "list", "create", "update", "delete"]
