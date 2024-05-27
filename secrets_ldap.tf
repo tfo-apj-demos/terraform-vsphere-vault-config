@@ -36,11 +36,19 @@ resource "vault_ldap_secret_backend" "this" {
   schema          = "ad"
 }
 
-resource "vault_ldap_secret_backend_static_role" "this" {
+resource "vault_ldap_secret_backend_static_role" "nsx_read_only" {
   mount           = vault_ldap_secret_backend.this.path
-  role_name       = "sr_vault_01"
-  username        = "sr_vault_01"
-  dn              = "CN=sr_vault_01,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
+  role_name       = "nsx_read_only"
+  username        = "nsx_auditor"
+  dn              = "CN=nsx_auditor,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
+  rotation_period = 604800
+}
+
+resource "vault_ldap_secret_backend_static_role" "vm_builder" {
+  mount           = vault_ldap_secret_backend.this.path
+  role_name       = "vm_builder"
+  username        = "vm_builder"
+  dn              = "CN=vm_builder,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
   rotation_period = 604800
 }
 
