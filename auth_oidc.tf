@@ -17,6 +17,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   role_name = "systems_engineer"
   token_policies = [
     "create_pki",
+    "ldap_reader",
   ]
   oidc_scopes = [
     "username",
