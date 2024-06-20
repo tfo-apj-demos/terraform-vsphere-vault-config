@@ -13,7 +13,8 @@ resource "vault_jwt_auth_backend_role" "tfc" {
     "create_child_token",
     "configure_db_connection",
     "read_db_creds",
-    "create_workspace_policy"
+    "create_workspace_policy",
+    "create_ssh_role"
   ]
 
   bound_audiences = [
