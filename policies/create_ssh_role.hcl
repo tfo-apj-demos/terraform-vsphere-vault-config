@@ -1,3 +1,3 @@
-path "ssh/roles/+" {
-  capabilities = ["create", "update"]
+path "ssh/roles/*" {
+  capabilities = ["create", "update", "delete"]
 }
