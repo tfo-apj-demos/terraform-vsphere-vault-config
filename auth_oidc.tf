@@ -18,6 +18,7 @@ resource "vault_jwt_auth_backend_role" "this" {
   token_policies = [
     "create_pki",
     "ldap_reader",
+    "read_service_principal_kv"
   ]
   oidc_scopes = [
     "username",
