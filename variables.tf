@@ -159,3 +159,17 @@ variable "external_root_ca_url" {
   default     = "https://production.vault.11eb56d6-0f95-3a99-a33c-0242ac110007.aws.hashicorp.cloud:8200/v1/pki"
 }
 
+variable "kubernetes_api" {
+  type        = string
+  description = "kubernetes control plane"
+}
+
+variable "kubernetes_ca_cert" {
+  type        = string
+  description = "kubernetes cluster certificate"
+}
+
+variable "token_reviewer_jwt" {
+  type        = string
+  description = "json web token"
+}
