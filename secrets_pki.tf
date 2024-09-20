@@ -68,7 +68,7 @@ EOH
 resource "vault_pki_secret_backend_role" "gcve" {
   name    = "gcve"
   backend = vault_mount.pki.path
-  max_ttl = "259200"
+  max_ttl = "7890048" # approximately 3 months
   ttl     = "259200"
   allowed_domains = [
     "hashicorp.local"
