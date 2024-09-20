@@ -5,7 +5,7 @@ resource "vault_auth_backend" "this" {
 resource "vault_kubernetes_auth_backend_config" "this" {
   backend            = vault_auth_backend.this.path
   kubernetes_host    = var.kubernetes_api
-  kubernetes_ca_cert = var.kubernetes_ca_cert
+  kubernetes_ca_cert = base64decode(var.kubernetes_ca_cert)
   token_reviewer_jwt = var.token_reviewer_jwt
 }
 
