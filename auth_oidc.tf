@@ -19,7 +19,8 @@ resource "vault_jwt_auth_backend_role" "this" {
     "create_pki",
     "ldap_reader",
     "read_service_principal_kv",
-    "create_ssh_role"
+    "create_ssh_role",
+    "sign_ssh",
   ]
   oidc_scopes = [
     "username",
