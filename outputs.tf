@@ -4,7 +4,6 @@ output "ca_chain_certificate" {
 }
 
 output "approle_ansible" {
-  value       = vault_approle_auth_backend_role_secret_id.id.secret_id
+  value       = nonsensitive(vault_approle_auth_backend_role_secret_id.id.secret_id)
   description = "The role_id for the approle ansible."
-  sensitive = true
 }
