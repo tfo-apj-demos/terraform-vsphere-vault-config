@@ -10,7 +10,7 @@ resource "vault_ssh_secret_backend_ca" "this" {
 
 resource "vault_ssh_secret_backend_role" "this" {
   backend = vault_mount.ssh.path
-	name = "boundary"
+	name = "ansible"
 	allow_user_certificates = true
   default_user = "ubuntu"
   allowed_users = "*"
