@@ -28,3 +28,13 @@ resource "vault_kubernetes_auth_backend_role" "aap" {
   token_policies                   = ["default", "create_ssh_role"]
   audience = "vault"
 }
+
+resource "vault_kubernetes_auth_backend_role" "awx" {
+  backend                          = vault_auth_backend.this.path
+  role_name                        = "awx"
+  bound_service_account_names      = ["*"]
+  bound_service_account_namespaces = ["awx"]
+  token_ttl                        = 259200
+  token_policies                   = ["default", "create_ssh_role"]
+  audience = "vault"
+}
