@@ -7,7 +7,6 @@ resource "vault_kubernetes_auth_backend_config" "this" {
   kubernetes_host    = var.kubernetes_api
   kubernetes_ca_cert = base64decode(var.kubernetes_ca_cert)
   token_reviewer_jwt = var.token_reviewer_jwt
-  issuer             = "https://kubernetes.default.svc"
 }
 
 resource "vault_kubernetes_auth_backend_role" "tfe" {
