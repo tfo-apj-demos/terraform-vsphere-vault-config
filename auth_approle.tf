@@ -7,7 +7,6 @@ resource "vault_approle_auth_backend_role" "ansible" {
   backend         = vault_auth_backend.approle.path
   role_name       = "ansible"
   token_policies  = ["sign_ssh"]
-  secret_id_ttl   = "1h"
 }
 
 resource "vault_approle_auth_backend_role_secret_id" "id" {
