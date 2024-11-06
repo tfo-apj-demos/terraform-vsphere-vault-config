@@ -37,6 +37,6 @@ resource "vault_kubernetes_auth_backend_role" "awx" {
   bound_service_account_names      = ["*"]
   bound_service_account_namespaces = ["awx"]
   token_ttl                        = 259200
-  token_policies                   = ["default", "sign_ssh"]
+  token_policies                   = ["default", "sign_ssh", "create_pki"]
   audience = "https://kubernetes.default.svc"
 }
