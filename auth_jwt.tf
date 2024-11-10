@@ -64,6 +64,6 @@ resource "vault_jwt_auth_backend_role" "openshift" {
     "user_login"   = "user_login"
   }
 
-  token_policies = ["create_child_token"]
+  token_policies = ["create_child_token", "update_approle"]
   token_max_ttl  = "900"
 }
