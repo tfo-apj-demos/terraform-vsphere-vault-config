@@ -36,3 +36,27 @@ resource "vault_jwt_auth_backend_role" "tfc" {
   token_ttl = 8*60*60 # 8 hours by 60 minutes by 60 seconds
   token_period = 8*60*60
 }
+
+resource "vault_jwt_auth_backend_role" "openshift" {
+  backend           = vault_jwt_auth_backend.jwt.path
+  role_name         = "openshift"
+  role_type         = "jwt"
+  bound_claims_type = "glob"
+  bound_audiences   = ["https://vault.hashicorp.local:8200"]
+
+  user_claim = "project_id"
+  #user_claim = "user_email"
+  bound_claims = {
+    project_id = "*"
+  }
+  claim_mappings = {
+    "user_email"   = "user_email"
+    "project_id"   = "project_id"
+    "user_id"      = "user_id"
+    "project_path" = "project_path"
+    "user_login"   = "user_login"
+  }
+
+  token_policies = ["create_child_token"]
+  token_max_ttl  = "900"
+}
