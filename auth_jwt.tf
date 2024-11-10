@@ -39,7 +39,7 @@ resource "vault_jwt_auth_backend_role" "tfc" {
 
 resource "vault_jwt_auth_backend" "openshift" {
   description        = "JWT Backend for GitLab"
-  path               = "jwt"
+  path               = "jwt-gitlab"
   oidc_discovery_url = "https://gitlab.com"
   bound_issuer       = "https://gitlab.com"
 }
