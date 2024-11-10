@@ -1,5 +1,5 @@
 # Policy for rotating and deleting AppRole secret_id and accessor
-path "auth/approle/role/ansible/*" {
+path "auth/approle/role/ansible" {
   capabilities = ["create", "update", "read", "list" ]
 }
 
