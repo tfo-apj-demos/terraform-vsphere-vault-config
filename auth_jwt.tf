@@ -1,13 +1,13 @@
 # --- Config for JWT auth used by TFC
 
-resource "vault_jwt_auth_backend" "tfc" {
+resource "vault_jwt_auth_backend" "jwt" {
   path               = "jwt"
   oidc_discovery_url = "https://app.terraform.io"
   bound_issuer       = "https://app.terraform.io"
 }
 
 resource "vault_jwt_auth_backend_role" "tfc" {
-  backend   = vault_jwt_auth_backend.tfc.path
+  backend   = vault_jwt_auth_backend.jwt.path
   role_name = "tfc"
   token_policies = [
     "create_child_token",
