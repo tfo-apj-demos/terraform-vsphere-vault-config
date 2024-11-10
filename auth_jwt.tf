@@ -1,13 +1,13 @@
 # --- Config for JWT auth used by TFC
 
-resource "vault_jwt_auth_backend" "jwt" {
+resource "vault_jwt_auth_backend" "tfc" {
   path               = "jwt"
   oidc_discovery_url = "https://app.terraform.io"
   bound_issuer       = "https://app.terraform.io"
 }
 
 resource "vault_jwt_auth_backend_role" "tfc" {
-  backend   = vault_jwt_auth_backend.jwt.path
+  backend   = vault_jwt_auth_backend.tfc.path
   role_name = "tfc"
   token_policies = [
     "create_child_token",
@@ -37,8 +37,15 @@ resource "vault_jwt_auth_backend_role" "tfc" {
   token_period = 8*60*60
 }
 
+resource "vault_jwt_auth_backend" "openshift" {
+  description        = "JWT Backend for GitLab"
+  path               = "jwt"
+  oidc_discovery_url = "https://gitlab.com"
+  bound_issuer       = "https://gitlab.com"
+}
+
 resource "vault_jwt_auth_backend_role" "openshift" {
-  backend           = vault_jwt_auth_backend.jwt.path
+  backend           = vault_jwt_auth_backend.openshift.path
   role_name         = "openshift"
   role_type         = "jwt"
   bound_claims_type = "glob"
