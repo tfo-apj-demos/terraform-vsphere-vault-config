@@ -3,6 +3,6 @@ path "auth/approle/role/ansible/secret-id" {
   capabilities = ["create", "update", "read", "list" ]
 }
 
-# path "auth/approle/role/ansible/secret-id-accessor/*" {
-#   capabilities = ["list", "read", "update", "delete"]
-# }
+path "auth/approle/role/ansible/secret-id-accessor/*" {
+  capabilities = ["list", "read", "update", "delete"]
+}
