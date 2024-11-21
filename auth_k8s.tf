@@ -40,3 +40,13 @@ resource "vault_kubernetes_auth_backend_role" "awx" {
   token_policies                   = ["default", "sign_ssh", "create_pki"]
   audience = "https://kubernetes.default.svc"
 }
+
+resource "vault_kubernetes_auth_backend_role" "gitlab" {
+  backend                          = vault_auth_backend.this.path
+  role_name                        = "gitlab"
+  bound_service_account_names      = ["*"]
+  bound_service_account_namespaces = ["gitlab"]
+  token_ttl                        = 259200
+  token_policies                   = ["default",  "create_pki"]
+  audience = "https://kubernetes.default.svc"
+}
