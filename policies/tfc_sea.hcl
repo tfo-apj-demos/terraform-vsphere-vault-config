@@ -1,5 +1,5 @@
 # --- Create role for TFC
-path "/jwt/role/{{identity.entity.name}}" {
+path "auth/jwt/role/{{identity.entity.name}}" {
     capabilities = [
       "create",
       "read",
