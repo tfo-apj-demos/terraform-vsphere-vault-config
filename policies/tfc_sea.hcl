@@ -4,7 +4,8 @@ path "auth/jwt/role/{{identity.entity.name}}" {
       "create",
       "read",
       "update",
-      "delete"
+      "delete",
+      "list",
     ]
     // allowed_parameters = {
     //   role_type  = "jwt",
