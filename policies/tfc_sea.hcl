@@ -8,3 +8,14 @@ path "auth/jwt/role/{{identity.entity.name}}" {
       "list"
     ]
 }
+
+#Path to access kv secrets
+path "secrets/*" {
+    capabilities = [
+      "create",
+      "read",
+      "update",
+      "delete",
+      "list"
+    ]
+}
