@@ -25,7 +25,8 @@ resource "vault_identity_group" "team_se" {
   type = "external"
   name = "team-se"
   policies = [
-    "team-sea"
+    "team-sea",
+    "tfc_sea"
   ]
 }
 
