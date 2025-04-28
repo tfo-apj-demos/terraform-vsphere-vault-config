@@ -8,7 +8,7 @@ resource "vault_ssh_secret_backend_ca" "this" {
 		generate_signing_key = true
 }
 
-resource "vault_ssh_secret_backend_role" "this" {
+resource "vault_ssh_secret_backend_role" "ansible-ubuntu" {
   backend = vault_mount.ssh.path
 	name = "ansible-ubuntu"
 	allow_user_certificates = true
@@ -22,7 +22,7 @@ resource "vault_ssh_secret_backend_role" "this" {
 }
 
 # new role for ansible ssh into rhel machine with a local user called vm_user
-resource "vault_ssh_secret_backend_role" "this" {
+resource "vault_ssh_secret_backend_role" "ansible-rhel" {
   backend = vault_mount.ssh.path
   name = "ansible-rhel"
   allow_user_certificates = true
