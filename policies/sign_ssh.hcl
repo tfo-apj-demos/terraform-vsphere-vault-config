@@ -1,3 +1,3 @@
-path "ssh/sign/ansible" {
+path "ssh/sign/*" {
   capabilities = ["read", "update"]
 }
