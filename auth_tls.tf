@@ -4,7 +4,7 @@ resource "vault_auth_backend" "cert" {
 }
 
 data "local_file" "root_ca_cert" {
-  filename = "${path.root}/ca_cert_dir/root_ca.pem"
+  filename = "${path.root}/ca_cert_dir/ca_chain.pem"
 }
 
 resource "vault_cert_auth_backend_role" "client-cert-auth" {
