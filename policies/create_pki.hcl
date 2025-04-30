@@ -10,6 +10,10 @@ path "pki/issue/*" {
   capabilities = ["create", "update"]
 }
 
+path "pki/sign/*" {
+  capabilities = ["create", "update"]
+}
+
 path "pki/revoke" {
   capabilities = ["update"]
 }
