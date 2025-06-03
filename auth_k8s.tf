@@ -50,3 +50,13 @@ resource "vault_kubernetes_auth_backend_role" "gitlab" {
   token_policies                   = ["default",  "create_pki"]
   audience = "https://kubernetes.default.svc"
 }
+
+resource "vault_kubernetes_auth_backend_role" "vault_live_secrets_demo" {
+  backend                          = vault_auth_backend.this.path
+  role_name                        = "vault-live-secrets-demo"
+  bound_service_account_names      = ["*"]
+  bound_service_account_namespaces = ["vault-live-secrets-demo"]
+  token_ttl                        = 259200
+  token_policies                   = ["default", "read_kv"]
+  audience = "https://kubernetes.default.svc"
+}
