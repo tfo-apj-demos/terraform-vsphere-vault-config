@@ -72,10 +72,16 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   rollback_ldif     = file("${path.module}/files/rollback.ldif")
   default_ttl       = 8 * 3600 # Make it easy to see this is eight hours
   username_template = <<EOF
-{{- $user := (.DisplayName | lower | regexReplaceAll "[^a-z0-9]" "" | truncate 4) -}}
-{{- $role := (.RoleName  | lower | regexReplaceAll "[^a-z0-9]" "" | truncate 6) -}}
-{{- $ts   := (time "1504020106") -}}     # hhmmddmmyy → e.g. 0930100625
-{{ printf "%s%s%s" $user $role $ts }}
+{{- /* first 4 alphanumerics of display name, lower-cased */ -}}
+{{- $user := (.DisplayName | lowercase | replace " " "" | truncate 4) -}}
+
+{{- /* first 6 chars of role name, lower-cased, strip underscores */ -}}
+{{- $role := (.RoleName | lowercase | replace "_" "" | truncate 6) -}}
+
+{{- /* time stamp: hhmmddmmyy (e.g. 0930100625) */ -}}
+{{- $ts := (timestamp "1504020106") -}}
+
+{{ printf "%s%s%s" $user $role $ts | truncate 20 }}
 EOF
   max_ttl = 28800
 }
