@@ -65,12 +65,17 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
   mount     = vault_ldap_secret_backend.this.path
   role_name = each.value.role_name
-  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
-    group_names = each.value.group_names
-  })
+  
+  creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {group_names = each.value.group_names })
+  
   deletion_ldif     = file("${path.module}/files/deletion.ldif")
   rollback_ldif     = file("${path.module}/files/rollback.ldif")
   default_ttl       = 8 * 3600 # Make it easy to see this is eight hours
-  username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
+  username_template = <<EOF
+{{- $user := (.DisplayName | lower | regexReplaceAll "[^a-z0-9]" "" | truncate 4) -}}
+{{- $role := (.RoleName  | lower | regexReplaceAll "[^a-z0-9]" "" | truncate 6) -}}
+{{- $ts   := (time "1504020106") -}}     # hhmmddmmyy → e.g. 0930100625
+{{ printf "%s%s%s" $user $role $ts }}
+EOF
   max_ttl = 28800
 }
