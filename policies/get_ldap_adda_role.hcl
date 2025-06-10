@@ -1,3 +1,3 @@
-path "ldap/roles/ad-da" {
+path "ldap/roles/*" {
   capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
