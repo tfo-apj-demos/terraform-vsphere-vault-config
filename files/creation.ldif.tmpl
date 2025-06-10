@@ -15,10 +15,11 @@ replace: userAccountControl
 userAccountControl: 66048
 -
 
-%{ for group_dn in group_dns ~}
+%{ for group_dn in group_dns }
 dn: ${group_dn}
 changetype: modify
 add: member
 member: CN={{.Username}},OU=Vault Managed Accounts,DC=hashicorp,DC=local
 -
+
 %{ endfor }
