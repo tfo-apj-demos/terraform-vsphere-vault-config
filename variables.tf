@@ -28,8 +28,8 @@ variable "ldap_roles" {
   description = "An object containing the role name and Active Directory groups to join."
   type = list(object({
     role_name   = string
-    group_names = list(string)
-    default_ttl  = number
+    group_dns   = list(string)
+    default_ttl = number
   }))
 }
 

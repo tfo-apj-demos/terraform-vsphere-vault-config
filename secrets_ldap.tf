@@ -67,8 +67,8 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   role_name = each.value.role_name
   
   creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
-    group_names = each.value.group_names
-  })
+    group_dns = each.value.group_dns
+})
   
   deletion_ldif     = file("${path.module}/files/deletion.ldif")
   rollback_ldif     = file("${path.module}/files/rollback.ldif")
