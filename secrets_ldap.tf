@@ -75,10 +75,6 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   default_ttl   = each.value.default_ttl
   #username_template = "{{printf \"%s%s%s%s\" (.DisplayName | truncate 8) (.RoleName | truncate 8) (random 20)| truncate 20}}"
   #username_template = "{{printf \"%sadm%s%s\" (.DisplayName | lowercase | replace \"-\" \"\" | replace \" \" \"\" | truncate 4) (.RoleName | lowercase | replace \"_\" \"\" | truncate 3) (timestamp \"1504020106\") | truncate 20}}"
-  username_template = "{{printf \"%s-adm-%s-%s\" \
-    (.DisplayName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 5) \
-    (.RoleName    | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 4) \
-    (timestamp \"0106\") \
-  | truncate 20}}"
+  username_template = "{{ printf \"%s-adm-%s-%s\" (.DisplayName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 5) (.RoleName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 4) (timestamp \"0106\") | truncate 20 }}"
   max_ttl = 28800
 }
