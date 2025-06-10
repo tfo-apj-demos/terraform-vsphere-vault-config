@@ -63,16 +63,17 @@ resource "vault_ldap_secret_backend_library_set" "this" {
 
 resource "vault_ldap_secret_backend_dynamic_role" "this" {
   for_each  = tomap({ for role in var.ldap_roles : role.role_name => role })
+  
   mount     = vault_ldap_secret_backend.this.path
   role_name = each.value.role_name
+  username_template = "{{ printf \"%s-adm-%s-%s\" (.DisplayName | lowercase | replace \"ldap-\" \"\" | replace \"-\" \"\" | replace \"_\" \"\" | truncate 6) (.RoleName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 4) (timestamp \"0106\") | truncate 20 }}"
   
   creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
     group_dns = each.value.group_dns
-})
-  
+    })
   deletion_ldif     = file("${path.module}/files/deletion.ldif")
   rollback_ldif     = file("${path.module}/files/rollback.ldif")
+
   default_ttl   = each.value.default_ttl
-  username_template = "{{ printf \"%s-adm-%s-%s\" (.DisplayName | lowercase | replace \"ldap-\" \"\" | replace \"-\" \"\" | replace \"_\" \"\" | truncate 6) (.RoleName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 4) (timestamp \"0106\") | truncate 20 }}"
   max_ttl = 28800
 }
