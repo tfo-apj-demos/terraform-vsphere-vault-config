@@ -29,6 +29,7 @@ variable "ldap_roles" {
   type = list(object({
     role_name   = string
     group_names = list(string)
+    default_ttl  = number
   }))
 }
 
