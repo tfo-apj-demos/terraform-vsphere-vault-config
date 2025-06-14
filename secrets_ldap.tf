@@ -56,8 +56,8 @@ resource "vault_ldap_secret_backend_static_role" "vm_builder" {
 resource "vault_ldap_secret_backend_static_role" "svc_demo" {
   mount           = vault_ldap_secret_backend.this.path
   role_name       = "svc_demo"
-  username        = "svc_demo"
-  dn              = "CN=svc_demo,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
+  username        = "svc-demo"
+  dn              = "CN=svc-demo,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
   # rotation every 5 minutes
   rotation_period = 300
 }
