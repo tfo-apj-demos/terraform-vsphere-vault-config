@@ -22,6 +22,11 @@ path "ldap/static-cred/+" {
   capabilities = ["read", "list"]
 }
 
+# --- Rotate static role passwords (NEW)
+path "ldap/rotate-role/+" {
+  capabilities = ["update"]
+}
+
 # --- Read and write library sets in the LDAP secret engine
 path "ldap/library-set/+" {
   capabilities = ["read", "list", "create", "update", "delete"]
