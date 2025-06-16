@@ -58,8 +58,8 @@ resource "vault_ldap_secret_backend_static_role" "svc_demo" {
   role_name       = "svc_demo"
   username        = "svc-demo"
   dn              = "CN=svc-demo,OU=Vault Managed Accounts,DC=hashicorp,DC=local"
-  # rotation every 5 minutes
-  rotation_period = 300
+  # rotation every 3 months
+  rotation_period = 7776000 # 90 days
 }
 
 resource "vault_ldap_secret_backend_library_set" "this" {
