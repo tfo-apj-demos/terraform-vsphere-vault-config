@@ -64,12 +64,117 @@ mg==
 -----END CERTIFICATE-----
 EOH
 }
+# PKI Role for TLS Authentication Certificates
+# Used by: AAP workflow to sign CSRs for Vault Agent authentication
+# Purpose: Client authentication TO Vault using TLS cert auth method
+resource "vault_pki_secret_backend_role" "tls_auth" {
+  name    = "tls-auth"
+  backend = vault_mount.pki.path
+  
+  # Longer TTL for authentication certificates (30 days default, max 3 months)
+  ttl     = "720h"   # 30 days
+  max_ttl = "2160h"  # 90 days
+  
+  # Domain restrictions
+  allowed_domains = [
+    "hashicorp.local"
+  ]
+  allow_subdomains  = true
+  enforce_hostnames = true
+  allow_bare_domains = false
+  allow_glob_domains = false
+  
+  # Key configuration
+  key_type = "rsa"
+  key_bits = 2048
+  
+  # Certificate usage - CLIENT AUTHENTICATION ONLY
+  server_flag = false  # NOT for server auth
+  client_flag = true   # For client auth
+  
+  # Extended Key Usage - ClientAuth only
+  ext_key_usage = [
+    "ClientAuth"
+  ]
+  
+  # Key Usage - appropriate for client auth
+  key_usage = [
+    "DigitalSignature",
+    "KeyAgreement"
+  ]
+  
+  # Additional security
+  allow_ip_sans = false  # Auth certs don't need IP SANs
+  allow_any_name = false
+  
+  # No URI SANs needed for auth certs
+  allowed_uri_sans = []
+}
 
+# PKI Role for Application Server Certificates  
+# Used by: Vault Agent templates to auto-renew application certificates
+# Purpose: Server certificates for applications (HTTPS, databases, etc.)
+resource "vault_pki_secret_backend_role" "server" {
+  name    = "server"
+  backend = vault_mount.pki.path
+  
+  # Shorter TTL for application certificates (24h default, max 7 days)
+  # Short TTL is fine since Vault Agent auto-renews
+  ttl     = "24h"   # 24 hours
+  max_ttl = "168h"  # 7 days
+  
+  # Domain restrictions
+  allowed_domains = [
+    "hashicorp.local"
+  ]
+  allow_subdomains  = true
+  enforce_hostnames = true
+  allow_bare_domains = false
+  allow_glob_domains = false
+  
+  # Key configuration
+  key_type = "rsa"
+  key_bits = 2048
+  
+  # Certificate usage - SERVER AUTHENTICATION ONLY
+  server_flag = true   # For server auth
+  client_flag = false  # NOT for client auth
+  
+  # Extended Key Usage - ServerAuth only
+  ext_key_usage = [
+    "ServerAuth"
+  ]
+  
+  # Key Usage - appropriate for server auth
+  key_usage = [
+    "DigitalSignature",
+    "KeyEncipherment"
+  ]
+  
+  # Additional features for application certificates
+  allow_ip_sans = true  # Allow IP addresses in SANs
+  allow_any_name = false
+  
+  # URI SANs for modern service mesh / SPIFFE compatibility
+  allowed_uri_sans = [
+    "*.hashicorp.local",
+    "spiffe://hashicorp.local/*"
+  ]
+  
+  # Allow localhost for development/testing
+  allow_localhost = true
+}
+
+# Keep your existing role for backward compatibility or other uses
+# You can deprecate this later once you've migrated
 resource "vault_pki_secret_backend_role" "gcve" {
   name    = "gcve"
   backend = vault_mount.pki.path
+  
+  # Original settings
   max_ttl = "7890048" # approximately 3 months
-  ttl     = "259200"
+  ttl     = "259200"  # 3 days
+  
   allowed_domains = [
     "hashicorp.local"
   ]
@@ -79,4 +184,9 @@ resource "vault_pki_secret_backend_role" "gcve" {
   allow_ip_sans     = true
   allow_subdomains  = true
   enforce_hostnames = false
+  
+  # Since this has both flags, it's a dual-purpose cert
+  # Consider deprecating in favor of specific roles above
+  server_flag = true
+  client_flag = true
 }
