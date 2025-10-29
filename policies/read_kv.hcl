@@ -7,5 +7,5 @@
 # }
 
 path "secrets/data/*" {
-  capabilities = [ "create", "read", "update", "delete", "list" ]
+  capabilities = [ "create", "read", "update", "patch", "delete", "list" ]
 }

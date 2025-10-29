@@ -16,5 +16,5 @@ resource "vault_cert_auth_backend_role" "client-cert-auth" {
   name                 = "client-cert-auth"
   display_name         = "Client Cert Auth Role"
   certificate          = data.local_file.ca_chain.content
-  token_policies       = [ "create_pki" ]
+  token_policies       = [ "create_pki", "read_kv" ]
 }
