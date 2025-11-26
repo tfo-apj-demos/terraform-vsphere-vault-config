@@ -9,3 +9,7 @@
 path "secrets/data/*" {
   capabilities = [ "create", "read", "update", "patch", "delete", "list" ]
 }
+
+path "secrets/metadata/*" {
+  capabilities = [ "create", "read", "update", "patch", "delete", "list" ]
+}
