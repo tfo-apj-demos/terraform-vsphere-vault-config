@@ -85,6 +85,13 @@ Gd0KKisTGfdCmhxXd6/kYLezKfURywEbZsWqQhFeJSJisJngeGWYIiChVlwoaXRB
 -----END CERTIFICATE-----
 EOH
 }
+
+resource "vault_pki_secret_backend_config_issuers" "this" {
+  backend                = vault_mount.pki.path
+  default                = vault_pki_secret_backend_intermediate_set_signed.this.imported_issuers[0]
+  default_follows_latest_issuer = true
+}
+
 # PKI Role for TLS Authentication Certificates
 # Used by: AAP workflow to sign CSRs for Vault Agent authentication
 # Purpose: Client authentication TO Vault using TLS cert auth method
