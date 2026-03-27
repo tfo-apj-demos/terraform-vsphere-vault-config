@@ -87,6 +87,7 @@ EOH
 }
 
 resource "vault_pki_secret_backend_config_issuers" "this" {
+  count                  = length(vault_pki_secret_backend_intermediate_set_signed.this.imported_issuers) > 0 ? 1 : 0
   backend                = vault_mount.pki.path
   default                = vault_pki_secret_backend_intermediate_set_signed.this.imported_issuers[0]
   default_follows_latest_issuer = true
