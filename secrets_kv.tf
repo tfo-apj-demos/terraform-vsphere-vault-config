@@ -12,3 +12,18 @@ resource "vault_kv_secret_v2" "api_creds" {
     }
   )
 }
+
+# RHEL Subscription Manager credentials for VM registration
+resource "vault_kv_secret_v2" "rhel_subscription" {
+  mount = vault_mount.this.path
+  name  = "rhel/subscription"
+
+  data_json = jsonencode({
+    rhn_username = "PLACEHOLDER"
+    rhn_password = "PLACEHOLDER"
+  })
+
+  lifecycle {
+    ignore_changes = [data_json]
+  }
+}
