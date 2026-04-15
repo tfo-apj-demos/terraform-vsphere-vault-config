@@ -101,8 +101,8 @@ resource "vault_pki_secret_backend_role" "tls_auth" {
   backend = vault_mount.pki.path
   
   # Longer TTL for authentication certificates (30 days default, max 3 months)
-  ttl     = "720h"   # 30 days
-  max_ttl = "2160h"  # 90 days
+  ttl     = "2592000"   # 30 days
+  max_ttl = "7776000"  # 90 days
   
   # Domain restrictions
   allowed_domains = [
@@ -149,8 +149,8 @@ resource "vault_pki_secret_backend_role" "server" {
   
   # Shorter TTL for application certificates (24h default, max 7 days)
   # Short TTL is fine since Vault Agent auto-renews
-  ttl     = "24h"   # 24 hours
-  max_ttl = "168h"  # 7 days
+  ttl     = "86400"   # 24 hours
+  max_ttl = "604800"  # 7 days
   
   # Domain restrictions
   allowed_domains = [

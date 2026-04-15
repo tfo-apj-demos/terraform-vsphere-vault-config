@@ -27,7 +27,7 @@ resource "vault_ssh_secret_backend_role" "ansible-rhel" {
   name = "rhel"
   allow_user_certificates = true
   default_user = "vm_user"
-  allow_empty_principals = true
+  allow_empty_principals = false
   allowed_users = "*"
   key_type = "ca"
   ttl = "28800"
