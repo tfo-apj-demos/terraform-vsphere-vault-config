@@ -96,3 +96,17 @@ path "sys/audit*" {
 path "sys/remount" {
 	capabilities = ["create", "read", "update", "delete", "list", "sudo"]
 }
+
+# --- Manage Raft storage
+path "sys/storage/raft/snapshot" {
+  capabilities = ["read", "create", "update"]
+}
+
+path "sys/storage/raft/configuration" {
+  capabilities = ["read", "list"]
+}
+
+# --- Step down leader
+path "sys/step-down" {
+  capabilities = ["update", "sudo"]
+}
