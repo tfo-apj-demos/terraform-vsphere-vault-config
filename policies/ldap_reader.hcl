@@ -1,5 +1,8 @@
 # --- Read GCVE credentials from LDAP engine
-path "ldap/creds/+" {
+# Use the * glob (not +) so hierarchical role names like
+# ldap/creds/dynamic/vsphere_access — which span multiple path segments —
+# are also covered. + only matches a single segment.
+path "ldap/creds/*" {
   capabilities = ["read"]
 }
 
