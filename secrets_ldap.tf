@@ -76,7 +76,12 @@ resource "vault_ldap_secret_backend_dynamic_role" "this" {
   
   mount     = vault_ldap_secret_backend.this.path
   role_name = each.value.role_name
-  username_template = "{{ printf \"%s-adm-%s-%s\" (.DisplayName | lowercase | replace \"ldap-\" \"\" | replace \"-\" \"\" | replace \"_\" \"\" | truncate 6) (.RoleName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 4) (timestamp \"0106\") | truncate 20 }}"
+  # Username layout: aap-<role 5 chars>-<MMDDHHmmSS> (20 char AD limit).
+  # Second-precision timestamp guarantees uniqueness across parallel
+  # vault_read calls (two hosts hitting ldap/creds/* in the same minute
+  # otherwise hash to the same sAMAccountName and the second AddRequest
+  # fails with AD error 6005 ENTRY_EXISTS).
+  username_template = "{{ printf \"aap-%s-%s\" (.RoleName | lowercase | replace \"-\" \"\" | replace \"_\" \"\" | truncate 5) (timestamp \"0102150405\") | truncate 20 }}"
   
   creation_ldif = templatefile("${path.module}/files/creation.ldif.tmpl", {
     group_dns = each.value.group_dns
