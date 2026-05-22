@@ -33,4 +33,7 @@ override.tf.json
 .terraformrc
 terraform.rc
 ca_cert_dir/ca_chain.pem
+ca_cert_dir/ca_chain.pem
+ca_cert_dir/intermediate.pem
+ca_cert_dir/intermediate.pem.b64
 ca_cert_dir/intermediate.pem
