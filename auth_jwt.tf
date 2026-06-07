@@ -122,3 +122,48 @@ resource "vault_jwt_auth_backend_role" "aap" {
   token_ttl      = 20 * 60 # 20m — the secret lookup runs at job start; keep short
   token_max_ttl  = 60 * 60
 }
+
+# --- SSH signing role for the AAP "HashiCorp Vault Signed SSH (OIDC)" credential ---
+# Backs AAP credential type 40 (OIDC). Replaces the AppRole flow used by the
+# legacy "HashiCorp Vault Signed SSH" config credential (role_id/secret_id).
+# Instead of a static AppRole secret, AAP jobs present the gateway-signed
+# workload-identity JWT (same jwt-aap backend as aap-automation) and exchange it
+# for a short-lived token carrying only the sign_ssh policy (ssh/sign/*).
+#
+# Deliberately scoped wider than aap-automation: SSH signing is needed by jobs
+# across MANY inventories (~30 job templates), so we bind on audience + org
+# rather than a single inventory. The audience binding is the real lock — it
+# equals the Server URL on the AAP credential, which the gateway stamps into the
+# JWT `aud` claim.
+resource "vault_jwt_auth_backend_role" "aap_ssh_signer" {
+  backend   = vault_jwt_auth_backend.aap.path
+  role_name = "aap-ssh-signer"
+  role_type = "jwt"
+
+  # Must equal the Server URL configured on the AAP OIDC SSH credential.
+  bound_audiences = ["https://vault.hashicorp.local:8200"]
+
+  # Authorize any job in the "Default" org (no inventory restriction — these SSH
+  # machine credentials are consumed by job templates across many inventories).
+  bound_claims_type = "string"
+  bound_claims = {
+    aap_controller_organization_name = "Default"
+  }
+
+  user_claim = "sub"
+
+  # Surface job context onto the issued token for audit of who signed what.
+  claim_mappings = {
+    aap_controller_organization_name = "aap_org"
+    aap_controller_job_template_name = "aap_job_template"
+    aap_controller_launched_by_name  = "aap_launched_by"
+    aap_controller_job_id            = "aap_job_id"
+  }
+
+  # Signing only — no KV access. The issued token just needs to live long enough
+  # to make the ssh/sign call at job start; the signed certificate carries its
+  # own 8h TTL from the ssh secret backend role.
+  token_policies = ["sign_ssh"]
+  token_ttl      = 10 * 60 # 10m
+  token_max_ttl  = 30 * 60
+}
