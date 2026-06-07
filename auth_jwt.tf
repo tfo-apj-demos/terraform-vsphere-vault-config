@@ -82,19 +82,14 @@ resource "vault_jwt_auth_backend_role" "openshift" {
 resource "vault_jwt_auth_backend" "aap" {
   description = "JWT/OIDC backend for AAP workload identity (AAP 2.7)"
   path        = "jwt-aap"
-  # ISSUER NOTE — the AAP gateway is internally inconsistent about its OIDC
-  # issuer: the discovery doc advertises "https://.../o", the credential "Test"
-  # button mints tokens with iss "https://.../o/", and REAL job workload tokens
-  # carry a value matching neither (confirmed: Vault rejects them with
-  # "error validating token: invalid issuer (iss) claim"). Because a single
-  # bound_issuer can't match all three, we DON'T pin the issuer. Instead we
-  # validate by JWKS signature (only the gateway holds the signing key) plus the
-  # per-role bound_audiences (the Vault URL) and bound_claims (org=Default).
-  #
-  # NOTE: we use jwks_url, NOT oidc_discovery_url — discovery would re-enforce
-  # the discovery-document issuer even with bound_issuer unset, reintroducing the
-  # mismatch. jwks_url validates signature only and skips the iss check.
-  jwks_url = "https://aap-aap.apps.openshift-01.hashicorp.local/o/.well-known/jwks.json"
+  # ISSUER NOTE — the gateway's discovery doc advertises issuer "https://.../o"
+  # (no slash), but BOTH the credential Test button AND real job workload tokens
+  # actually carry iss "https://.../o/" (WITH trailing slash). bound_issuer is
+  # authoritative when set (it overrides the discovery-document issuer), so we
+  # pin it to the value the tokens really use. oidc_discovery_url stays slash-less
+  # so Vault resolves ".../o/.well-known/openid-configuration" correctly.
+  oidc_discovery_url = "https://aap-aap.apps.openshift-01.hashicorp.local/o"
+  bound_issuer       = "https://aap-aap.apps.openshift-01.hashicorp.local/o/"
 }
 
 resource "vault_jwt_auth_backend_role" "aap" {
@@ -121,12 +116,16 @@ resource "vault_jwt_auth_backend_role" "aap" {
   user_claim = "sub"
 
   # Surface job context onto the issued Vault token for audit / policy templating.
+  # IMPORTANT: claim_mappings values MUST be string claims — Vault aborts login
+  # with "error converting claim '<x>' to string" for non-string claims. The AAP
+  # gateway emits aap_controller_job_id (and *_id siblings) as INTEGERS, so they
+  # cannot be mapped here. Map only the string *_name claims. (The numeric job_id
+  # is still visible in the jwt-aap/login audit entry if needed for tracing.)
   claim_mappings = {
     aap_controller_organization_name = "aap_org"
     aap_controller_inventory_name    = "aap_inventory"
     aap_controller_job_template_name = "aap_job_template"
     aap_controller_launched_by_name  = "aap_launched_by"
-    aap_controller_job_id            = "aap_job_id"
   }
 
   token_policies = ["read_kv"]
@@ -164,11 +163,12 @@ resource "vault_jwt_auth_backend_role" "aap_ssh_signer" {
   user_claim = "sub"
 
   # Surface job context onto the issued token for audit of who signed what.
+  # NOTE: only string claims are mappable — aap_controller_job_id is an INTEGER
+  # and would abort login ("error converting claim ... to string"), so it's omitted.
   claim_mappings = {
     aap_controller_organization_name = "aap_org"
     aap_controller_job_template_name = "aap_job_template"
     aap_controller_launched_by_name  = "aap_launched_by"
-    aap_controller_job_id            = "aap_job_id"
   }
 
   # Signing only — no KV access. The issued token just needs to live long enough
