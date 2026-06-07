@@ -102,7 +102,7 @@ resource "vault_jwt_auth_backend_role" "aap" {
   bound_claims_type = "string"
   bound_claims = {
     aap_controller_organization_name = "Default"
-    aap_controller_inventory_name    = "Demo Inventory"
+    aap_controller_inventory_name    = "Better Together Project - better-together-vm-lifecycle-dev"
   }
 
   # `sub` is the gateway-composed workload subject; used for the Vault entity
