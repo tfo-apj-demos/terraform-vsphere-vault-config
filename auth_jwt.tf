@@ -82,17 +82,19 @@ resource "vault_jwt_auth_backend_role" "openshift" {
 resource "vault_jwt_auth_backend" "aap" {
   description = "JWT/OIDC backend for AAP workload identity (AAP 2.7)"
   path        = "jwt-aap"
-  # ISSUER NOTE — the AAP gateway is internally inconsistent about the trailing
-  # slash on its issuer:
-  #   * discovery doc advertises issuer "https://.../o"  (NO slash)
-  #   * REAL workload-identity tokens (retrieve_workload_identity_jwt, the path
-  #     real jobs use) carry iss "https://.../o"          (NO slash)
-  #   * the credential "Test" button fabricates a token with iss ".../o/" (slash)
-  # bound_issuer is a single value and must match the tokens REAL JOBS send, so
-  # it stays slash-less. Consequence: the UI "Test" button reports
-  # "invalid issuer (iss) claim" — that is cosmetic; real job runs validate fine.
-  oidc_discovery_url = "https://aap-aap.apps.openshift-01.hashicorp.local/o"
-  bound_issuer       = "https://aap-aap.apps.openshift-01.hashicorp.local/o"
+  # ISSUER NOTE — the AAP gateway is internally inconsistent about its OIDC
+  # issuer: the discovery doc advertises "https://.../o", the credential "Test"
+  # button mints tokens with iss "https://.../o/", and REAL job workload tokens
+  # carry a value matching neither (confirmed: Vault rejects them with
+  # "error validating token: invalid issuer (iss) claim"). Because a single
+  # bound_issuer can't match all three, we DON'T pin the issuer. Instead we
+  # validate by JWKS signature (only the gateway holds the signing key) plus the
+  # per-role bound_audiences (the Vault URL) and bound_claims (org=Default).
+  #
+  # NOTE: we use jwks_url, NOT oidc_discovery_url — discovery would re-enforce
+  # the discovery-document issuer even with bound_issuer unset, reintroducing the
+  # mismatch. jwks_url validates signature only and skips the iss check.
+  jwks_url = "https://aap-aap.apps.openshift-01.hashicorp.local/o/.well-known/jwks.json"
 }
 
 resource "vault_jwt_auth_backend_role" "aap" {
