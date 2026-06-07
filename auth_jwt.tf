@@ -82,15 +82,17 @@ resource "vault_jwt_auth_backend_role" "openshift" {
 resource "vault_jwt_auth_backend" "aap" {
   description = "JWT/OIDC backend for AAP workload identity (AAP 2.7)"
   path        = "jwt-aap"
-  # NOTE on the trailing slash: the AAP gateway's discovery document advertises
-  # issuer "https://.../o" (no slash), but the JWTs it actually mints carry
-  # iss "https://.../o/" (WITH slash). Vault validates the token's iss against
-  # bound_issuer, so this must match the *minted token*, not the discovery doc —
-  # otherwise every AAP OIDC auth fails with "invalid issuer (iss) claim".
-  # oidc_discovery_url stays slash-less so Vault resolves
-  # ".../o/.well-known/openid-configuration" correctly.
+  # ISSUER NOTE — the AAP gateway is internally inconsistent about the trailing
+  # slash on its issuer:
+  #   * discovery doc advertises issuer "https://.../o"  (NO slash)
+  #   * REAL workload-identity tokens (retrieve_workload_identity_jwt, the path
+  #     real jobs use) carry iss "https://.../o"          (NO slash)
+  #   * the credential "Test" button fabricates a token with iss ".../o/" (slash)
+  # bound_issuer is a single value and must match the tokens REAL JOBS send, so
+  # it stays slash-less. Consequence: the UI "Test" button reports
+  # "invalid issuer (iss) claim" — that is cosmetic; real job runs validate fine.
   oidc_discovery_url = "https://aap-aap.apps.openshift-01.hashicorp.local/o"
-  bound_issuer       = "https://aap-aap.apps.openshift-01.hashicorp.local/o/"
+  bound_issuer       = "https://aap-aap.apps.openshift-01.hashicorp.local/o"
 }
 
 resource "vault_jwt_auth_backend_role" "aap" {
