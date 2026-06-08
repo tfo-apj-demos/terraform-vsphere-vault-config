@@ -178,3 +178,52 @@ resource "vault_jwt_auth_backend_role" "aap_ssh_signer" {
   token_ttl      = 10 * 60 # 10m
   token_max_ttl  = 30 * 60
 }
+
+# --- Broad KV-read role for the AAP "HashiCorp Vault Secret Lookup (OIDC)" credential ---
+# Backs AAP credential type 39 (OIDC external lookup). Replaces the AppRole flow
+# of the legacy "HashiCorp Vault Access" config credential (id 19, custom type
+# 32) for the FIXED-secret case: at job launch AAP exchanges the gateway-signed
+# workload-identity JWT (same jwt-aap backend) for a short-lived read_kv token,
+# reads one secret, and injects it into a credential field. (The workload JWT is
+# NOT exposed to the playbook runtime — confirmed in awx jobs.py
+# populate_workload_identity_tokens — so dynamic in-playbook OIDC lookups are not
+# possible; this role serves the server-side external-lookup pattern only.)
+#
+# Deliberately scoped wider than aap-automation, which binds a single inventory
+# ("better-together-vm-lifecycle-dev") and is too narrow for the ~30 job
+# templates that consume KV secrets across many inventories. Like aap-ssh-signer,
+# we bind on audience + org only; the audience binding is the real lock (it
+# equals the Server URL stamped into the JWT `aud` claim by the gateway).
+resource "vault_jwt_auth_backend_role" "aap_kv_reader" {
+  backend   = vault_jwt_auth_backend.aap.path
+  role_name = "aap-kv-reader"
+  role_type = "jwt"
+
+  # Must equal the Server URL configured on the AAP OIDC secret-lookup credential.
+  bound_audiences = ["https://vault.hashicorp.local:8200"]
+
+  # Any job in the "Default" org (no inventory restriction — KV secrets are read
+  # by job templates spanning many inventories).
+  bound_claims_type = "string"
+  bound_claims = {
+    aap_controller_organization_name = "Default"
+  }
+
+  user_claim = "sub"
+
+  # Surface job context onto the issued token for audit of who read what.
+  # NOTE: only string claims are mappable — aap_controller_job_id is an INTEGER
+  # and would abort login ("error converting claim ... to string"), so it's
+  # omitted. (Same gotcha that bit aap-automation / aap-ssh-signer.)
+  claim_mappings = {
+    aap_controller_organization_name = "aap_org"
+    aap_controller_job_template_name = "aap_job_template"
+    aap_controller_launched_by_name  = "aap_launched_by"
+  }
+
+  # read_kv grants secret/data/* (same policy aap-automation uses). The lookup
+  # runs once at job start, so keep the token short-lived.
+  token_policies = ["read_kv"]
+  token_ttl      = 20 * 60 # 20m
+  token_max_ttl  = 60 * 60
+}
